@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
+import { Firestore, collection, doc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user',
@@ -14,10 +15,28 @@ import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.compon
 })
 export class UserComponent {
 
+  firestore: Firestore = inject(Firestore);
   dialog: MatDialog = inject(MatDialog);
 
   openDialog() {
-    this.dialog.open(DialogAddUserComponent);
+    const dialogRef = this.dialog.open(DialogAddUserComponent);
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      result.birthDate = result.birthDate.getTime();
+      console.log(result);
+    });
+  }
+
+  async addDoc() {
+    await this.addDoc(this.getDocRef(), );
+  }
+
+  getDocRef() {
+    return collection(this.firestore, 'users');
+  }
+
+  getSingleDocRef(colId: string, docId: string) {
+    return doc(collection(this.firestore, colId), docId);
   }
 
 }

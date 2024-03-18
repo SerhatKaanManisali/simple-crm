@@ -1,3 +1,11 @@
+@mixin flexbox($jc: center, $ai: center, $fd: row, $g: 0px) {
+    display: flex;
+    justify-content: $jc;
+    align-items: $ai;
+    flex-direction: $fd;
+    gap: $g;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
