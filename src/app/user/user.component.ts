@@ -6,6 +6,7 @@ import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.compon
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -23,13 +24,11 @@ import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 export class UserComponent implements OnDestroy {
   firestore = inject(Firestore);
   dialogAddUser: DialogAddUserComponent = inject(DialogAddUserComponent);
+  route: ActivatedRoute = inject(ActivatedRoute);
   displayedColumns: string[] = [
-    'first name',
-    'last name',
-    'birth date',
-    'street',
-    'zip code',
-    'city',
+    'name',
+    'email',
+    'phone'
   ];
 
   dataSource: {}[] = [];
@@ -38,16 +37,20 @@ export class UserComponent implements OnDestroy {
 
   constructor() {
     this.users$ = collectionData(collection(this.firestore, 'users'));
-    this.users = this.users$.subscribe((users) => {
-      users.forEach((user) => {
-        user['birthDate'] = this.formatDate(user);
+    if (this.users$) {
+      this.users = this.users$.subscribe((users) => {
+        users.forEach((user) => {
+          user['birthDate'] = this.formatDate(user);
+        });
+        this.dataSource = users;
       });
-      this.dataSource = users;
-    });
+    }
   }
 
   ngOnDestroy() {
-    this.users.unsubscribe();
+    if (this.users) {
+      this.users.unsubscribe();
+    }
   }
 
   formatDate(user: any) {

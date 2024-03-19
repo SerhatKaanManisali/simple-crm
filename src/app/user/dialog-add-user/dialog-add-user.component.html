@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>Add user</h1>
 <mat-dialog-content>
-  <div class="name-input">
+  <div class="two-fields">
     <mat-form-field appearance="outline">
       <mat-label>First name</mat-label>
-    <input [(ngModel)]="user.firstName" matInput placeholder="First name"/>
+      <input [(ngModel)]="user.firstName" matInput placeholder="First name" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -13,19 +13,34 @@
   </div>
 
   <mat-form-field appearance="outline">
-    <mat-label>Birth date</mat-label>
-    <input [(ngModel)]="user.birthDate" matInput [matDatepicker]="picker"/>
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+    <mat-label>Email</mat-label>
+    <input [(ngModel)]="user.email" matInput placeholder="Email" />
   </mat-form-field>
+
+  <div class="two-fields">
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input [(ngModel)]="user.phone" matInput placeholder="Phone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Birth date</mat-label>
+      <input [(ngModel)]="user.birthDate" matInput [matDatepicker]="picker" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
 
   <mat-form-field appearance="outline">
     <mat-label>Street & house no.</mat-label>
     <input [(ngModel)]="user.street" matInput placeholder="Address" />
   </mat-form-field>
 
-  <div class="address-input">
+  <div class="two-fields">
     <mat-form-field appearance="outline">
       <mat-label>Zip code</mat-label>
       <input [(ngModel)]="user.zipCode" matInput placeholder="Zip code" />
@@ -39,5 +54,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button color="primary" [mat-dialog-close]="user">Save</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="user">
+    Save
+  </button>
 </mat-dialog-actions>

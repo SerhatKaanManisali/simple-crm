@@ -14,12 +14,8 @@ mat-dialog-actions {
     padding-right: 24px;
 }
 
-.name-input {
+.two-fields {
     @include flexbox($g: 16px);
     margin-top: 4px;
-}
-
-.address-input {
-    @include flexbox($g: 16px);
-    margin-top: 4px;
+    width: 100%;
 }

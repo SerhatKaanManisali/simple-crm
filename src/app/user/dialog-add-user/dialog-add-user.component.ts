@@ -7,8 +7,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { User } from '../../interfaces/user.interface';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Firestore, collection, doc, addDoc } from '@angular/fire/firestore';
-
+import {
+  Firestore,
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -32,11 +37,14 @@ export class DialogAddUserComponent {
   dialog: MatDialog = inject(MatDialog);
 
   user: User = {
+    id: '',
     firstName: '',
     lastName: '',
-    birthDate: 12345,
+    email: '',
+    phone: 123456789,
+    birthDate: 0,
     street: '',
-    zipCode: 0,
+    zipCode: 12345,
     city: '',
   };
 
@@ -55,10 +63,14 @@ export class DialogAddUserComponent {
     });
   }
 
-  async addDoc(item: User) {
+  async addDoc(user: User) {
     this.loading = true;
-    await addDoc(this.getUsersRef(), item)
-      .then(() => this.loading = false)
+    await addDoc(this.getUsersRef(), user).then(async (userInfo) => {
+      this.loading = false;
+      await updateDoc(this.getSingleDocRef('users', userInfo.id), {
+        id: userInfo.id,
+      });
+    });
   }
 
   getUsersRef() {

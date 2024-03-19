@@ -3,34 +3,19 @@
 }
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-  <ng-container matColumnDef="first name">
-    <th mat-header-cell *matHeaderCellDef>First name</th>
-    <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.firstName }} {{element.lastName}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="last name">
-    <th mat-header-cell *matHeaderCellDef>Last name</th>
-    <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let element">{{ element.email }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="birth date">
-    <th mat-header-cell *matHeaderCellDef>Birth date</th>
-    <td mat-cell *matCellDef="let element">{{ element.birthDate }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="street">
-    <th mat-header-cell *matHeaderCellDef>Street</th>
-    <td mat-cell *matCellDef="let element">{{ element.street }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="zip code">
-    <th mat-header-cell *matHeaderCellDef>Zip code</th>
-    <td mat-cell *matCellDef="let element">{{ element.zipCode }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="city">
-    <th mat-header-cell *matHeaderCellDef>City</th>
-    <td mat-cell *matCellDef="let element">{{ element.city }}</td>
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef>Phone</th>
+    <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
