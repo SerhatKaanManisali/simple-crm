@@ -1,42 +1,56 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
-import { Firestore, collection, doc } from '@angular/fire/firestore';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+  ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrl: './user.component.scss',
 })
-export class UserComponent {
+export class UserComponent implements OnDestroy {
+  firestore = inject(Firestore);
+  dialogAddUser: DialogAddUserComponent = inject(DialogAddUserComponent);
+  displayedColumns: string[] = [
+    'first name',
+    'last name',
+    'birth date',
+    'street',
+    'zip code',
+    'city',
+  ];
 
-  firestore: Firestore = inject(Firestore);
-  dialog: MatDialog = inject(MatDialog);
+  dataSource: {}[] = [];
+  users$;
+  users;
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogAddUserComponent);
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      result.birthDate = result.birthDate.getTime();
-      console.log(result);
+  constructor() {
+    this.users$ = collectionData(collection(this.firestore, 'users'));
+    this.users = this.users$.subscribe((users) => {
+      users.forEach((user) => {
+        user['birthDate'] = this.formatDate(user);
+      });
+      this.dataSource = users;
     });
   }
 
-  async addDoc() {
-    await this.addDoc(this.getDocRef(), );
+  ngOnDestroy() {
+    this.users.unsubscribe();
   }
 
-  getDocRef() {
-    return collection(this.firestore, 'users');
+  formatDate(user: any) {
+    return new Date(user['birthDate']).toLocaleDateString();
   }
-
-  getSingleDocRef(colId: string, docId: string) {
-    return doc(collection(this.firestore, colId), docId);
-  }
-
 }

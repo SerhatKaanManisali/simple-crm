@@ -9,6 +9,11 @@ mat-form-field {
     width: 100%;
 }
 
+mat-dialog-actions {
+    padding-bottom: 24px;
+    padding-right: 24px;
+}
+
 .name-input {
     @include flexbox($g: 16px);
     margin-top: 4px;

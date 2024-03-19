@@ -1,3 +1,10 @@
+mat-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .add-user-button {
     position: absolute;
     right: 30px;
