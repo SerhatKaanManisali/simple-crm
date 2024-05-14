@@ -6,7 +6,7 @@ import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.compon
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    RouterModule
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -25,6 +26,7 @@ export class UserComponent implements OnDestroy {
   firestore = inject(Firestore);
   dialogAddUser: DialogAddUserComponent = inject(DialogAddUserComponent);
   route: ActivatedRoute = inject(ActivatedRoute);
+  router: RouterModule = inject(RouterModule);
   displayedColumns: string[] = [
     'name',
     'email',

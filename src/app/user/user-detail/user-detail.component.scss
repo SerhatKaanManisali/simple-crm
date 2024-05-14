@@ -1,0 +1,54 @@
+@import '../../../styles.scss';
+
+section {
+    @include flexbox($g: 25px, $fd: column);
+    width: 100%;
+}
+
+.user-detail-header {
+    @include flexbox($jc: flex-start, $ai: flex-end);
+    background-color: #ff2d2d;
+    width: 100%;
+    min-height: 250px;
+    color: white;
+
+    >img {
+        height: 100px;
+        width: 100px;
+        border-radius: 100%;
+        margin-left: 25px;
+        margin-bottom: 25px;
+        object-fit: cover;
+    }
+
+    >mat-card {
+        width: 100%;
+    }
+}
+
+.user-details {
+    @include flexbox($fd: column, $ai: flex-start, $jc: center, $g: 10px);
+    height: 100px;
+    margin-left: 40px;
+    margin-bottom: 25px;
+
+    >h1 {
+        margin: 0;
+        font-weight: 500;
+    }
+
+    >h2 {
+        margin: 0;
+        font-weight: 400;
+    }
+}
+
+.user-detail-address {
+    width: 100%;
+
+    >button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}

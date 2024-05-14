@@ -10,3 +10,9 @@ mat-spinner {
     right: 30px;
     bottom: 16px;
 }
+
+.mat-mdc-row:hover {
+    transition: all 100ms ease-in-out;
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
