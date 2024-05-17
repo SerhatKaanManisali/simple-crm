@@ -1,0 +1,21 @@
+@import '../../../../styles.scss';
+
+mat-dialog-content {
+    @include flexbox($ai: flex-start, $fd: column, $g: 16px);
+    padding: 0 16px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+mat-dialog-actions {
+    padding-bottom: 24px;
+    padding-right: 24px;
+}
+
+.two-fields {
+    @include flexbox($g: 16px);
+    margin-top: 4px;
+    width: 100%;
+}

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { MatCardModule } from "@angular/material/card";
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
@@ -28,7 +28,17 @@ export class UserDetailComponent implements OnInit {
   dialog: MatDialog = inject(MatDialog);
 
   userId = '';
-  user: User | null = null;
+  user: User = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: 123456789,
+    birthDate: 0,
+    street: '',
+    zipCode: 12345,
+    city: '',
+  };
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.params['id'];
@@ -43,17 +53,53 @@ export class UserDetailComponent implements OnInit {
 
   openUserEditor() {
     const dialogRef = this.dialog.open(DialogEditUserComponent);
-
+    dialogRef.componentInstance.user = { ...this.user }
     dialogRef.afterClosed().subscribe(async (result: any) => {
-
+      if (result) {
+        this.user.firstName = result.firstname;
+        this.user.lastName = result.lastName;
+        this.user.email = result.email;
+        this.user.birthDate = result.birthDate;
+        await this.updateUser();
+      }
     });
   }
 
   openAddressEditor() {
     const dialogRef = this.dialog.open(DialogEditAddressComponent);
-
+    dialogRef.componentInstance.user = { ...this.user };
     dialogRef.afterClosed().subscribe(async (result: any) => {
-
+      if (result) {
+        this.user.street = result.street;
+        this.user.zipCode = result.zipCode;
+        this.user.city = result.city;
+        await this.updateUserAddress();
+      }
     });
+  }
+
+  async updateUser() {
+    await updateDoc(this.getSingleDocRef('users', this.user.id), {
+      firstname: this.user.firstName,
+      lastname: this.user.lastName,
+      email: this.user.email,
+      birthDate: this.user.birthDate
+    });
+  }
+
+  async updateUserAddress() {
+    await updateDoc(this.getSingleDocRef('users', this.user.id), {
+      street: this.user.street,
+      zipCode: this.user.zipCode,
+      city: this.user.city,
+    });
+  }
+
+  getUsersRef() {
+    return collection(this.firestore, 'users');
+  }
+
+  getSingleDocRef(colId: string, docId: string) {
+    return doc(collection(this.firestore, colId), docId);
   }
 }

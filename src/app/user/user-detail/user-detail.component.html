@@ -8,8 +8,8 @@
         </mat-menu>
         <img src="assets/img/empty-profile.png">
         <span class="user-details">
-            <h1>{{user?.firstName}} {{user?.lastName}}</h1>
-            <h2>{{user?.email}}</h2>
+            <h1>{{user.firstName}} {{user.lastName}}</h1>
+            <h2>{{user.email}}</h2>
         </span>
     </mat-card>
 
@@ -22,8 +22,8 @@
         </mat-menu>
         <mat-card-header><mat-card-title>Address</mat-card-title></mat-card-header>
         <mat-card-content>
-            {{user?.street}} <br>
-            {{user?.zipCode}} {{user?.city}}
+            {{user.street}} <br>
+            {{user.zipCode}} {{user.city}}
         </mat-card-content>
     </mat-card>
 </section>
