@@ -1,7 +1,7 @@
 <section>
     <mat-card class="user-detail-header">
         <button class="more-button" mat-icon-button [mat-menu-trigger-for]="userMenu">
-            <mat-icon>more_vert</mat-icon>
+            <img src="assets/img/more-options-white.png">
         </button>
         <mat-menu #userMenu="matMenu">
             <button mat-menu-item (click)="openUserEditor()">Edit</button>
@@ -15,7 +15,7 @@
 
     <mat-card class="user-detail-address">
         <button class="more-button" mat-icon-button [mat-menu-trigger-for]="addressMenu">
-            <mat-icon>more_vert</mat-icon>
+            <img class="more-options-black" src="assets/img/more-options-black.png">
         </button>
         <mat-menu #addressMenu="matMenu">
             <button mat-menu-item (click)="openAddressEditor()">Edit</button>
