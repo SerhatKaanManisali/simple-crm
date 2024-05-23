@@ -8,4 +8,5 @@ export interface User {
     street: string;
     zipCode: number;
     city: string;
+    fullName: string;
 }

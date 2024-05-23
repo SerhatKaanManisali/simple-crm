@@ -1,57 +1,89 @@
 <h1 mat-dialog-title>Add user</h1>
-<mat-dialog-content>
-  <div class="two-fields">
-    <mat-form-field appearance="outline">
-      <mat-label>First name</mat-label>
-      <input [(ngModel)]="user.firstName" matInput placeholder="First name" required />
-    </mat-form-field>
+<form [formGroup]="userForm">
+  <mat-dialog-content>
+    <div class="two-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>First name</mat-label>
+        <input formControlName="firstName" matInput placeholder="First name" />
+        <mat-error *ngIf="userForm.get('firstName').hasError('required')">
+          First name is required
+        </mat-error>
+        <mat-error *ngIf="userForm.get('firstName').hasError('minlength')">
+          First name must be at least 2 characters long
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Last name</mat-label>
+        <input formControlName="lastName" matInput placeholder="Last name" />
+        <mat-error *ngIf="userForm.get('lastName').hasError('required')">
+          Last name is required
+        </mat-error>
+        <mat-error *ngIf="userForm.get('lastName').hasError('minlength')">
+          Last name must be at least 2 characters long
+        </mat-error>
+      </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline">
-      <mat-label>Last name</mat-label>
-      <input [(ngModel)]="user.lastName" matInput placeholder="Last name" required />
-    </mat-form-field>
-  </div>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input [(ngModel)]="user.email" matInput placeholder="Email" required />
-  </mat-form-field>
-
-  <div class="two-fields">
-    <mat-form-field appearance="outline">
-      <mat-label>Phone</mat-label>
-      <input [(ngModel)]="user.phone" matInput placeholder="Phone" />
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput placeholder="Email" />
+      <mat-error *ngIf="userForm.get('email').hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="userForm.get('email').hasError('email')">
+        Invalid email address
+      </mat-error>
+      <mat-error *ngIf="userForm.get('email').hasError('pattern')">
+        Email must contain "&commat;" and a domain starting with "."
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Birth date</mat-label>
-      <input [(ngModel)]="user.birthDate" matInput [matDatepicker]="picker" />
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
+    <div class="two-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input formControlName="phone" matInput placeholder="Phone" />
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Street & house no.</mat-label>
-    <input [(ngModel)]="user.street" matInput placeholder="Address" required />
-  </mat-form-field>
-
-  <div class="two-fields">
-    <mat-form-field appearance="outline">
-      <mat-label>Zip code</mat-label>
-      <input [(ngModel)]="user.zipCode" matInput placeholder="Zip code" required />
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Birth date</mat-label>
+        <input formControlName="birthDate" matInput [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline">
-      <mat-label>City</mat-label>
-      <input [(ngModel)]="user.city" matInput placeholder="City" required />
+      <mat-label>Street & house no.</mat-label>
+      <input formControlName="street" matInput placeholder="Address" />
+      <mat-error *ngIf="userForm.get('street').hasError('required')">
+        Address is required
+      </mat-error>
     </mat-form-field>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-stroked-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button color="primary" [mat-dialog-close]="user" #saveButton>
-    Save
-  </button>
-</mat-dialog-actions>
+
+    <div class="two-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>Zip code</mat-label>
+        <input formControlName="zipCode" matInput placeholder="Zip code" />
+        <mat-error *ngIf="userForm.get('zipCode').hasError('required')">
+          Zip code is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>City</mat-label>
+        <input formControlName="city" matInput placeholder="City" />
+        <mat-error *ngIf="userForm.get('city').hasError('required')">
+          City is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="userForm.value">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,25 +1,36 @@
 <h1 mat-dialog-title>Edit address</h1>
-<mat-dialog-content>
-    <mat-form-field appearance="outline">
-        <mat-label>Street & house no.</mat-label>
-        <input [(ngModel)]="user.street" matInput placeholder="Address" />
-    </mat-form-field>
-
-    <div class="two-fields">
+<form [formGroup]="userForm">
+    <mat-dialog-content>
         <mat-form-field appearance="outline">
-            <mat-label>Zip code</mat-label>
-            <input [(ngModel)]="user.zipCode" matInput placeholder="Zip code" />
+            <mat-label>Street & house no.</mat-label>
+            <input formControlName="street" matInput placeholder="Address" />
+            <mat-error *ngIf="userForm.get('street').hasError('required')">
+                Street & house no. is required
+            </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>City</mat-label>
-            <input [(ngModel)]="user.city" matInput placeholder="City" />
-        </mat-form-field>
-    </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-stroked-button mat-dialog-close>Cancel</button>
-    <button mat-flat-button color="primary" [mat-dialog-close]="user">
-        Save
-    </button>
-</mat-dialog-actions>
+        <div class="two-fields">
+            <mat-form-field appearance="outline">
+                <mat-label>Zip code</mat-label>
+                <input formControlName="zipCode" matInput placeholder="Zip code" />
+                <mat-error *ngIf="userForm.get('zipCode').hasError('required')">
+                    Zip code is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <input formControlName="city" matInput placeholder="City" />
+                <mat-error *ngIf="userForm.get('city').hasError('required')">
+                    City is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button mat-dialog-close>Cancel</button>
+        <button mat-flat-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="user">
+            Save
+        </button>
+    </mat-dialog-actions>
+</form>

@@ -38,6 +38,7 @@ export class UserDetailComponent implements OnInit {
     street: '',
     zipCode: 12345,
     city: '',
+    fullName: ''
   };
 
   ngOnInit(): void {
@@ -56,6 +57,7 @@ export class UserDetailComponent implements OnInit {
     dialogRef.componentInstance.user = { ...this.user }
     dialogRef.afterClosed().subscribe(async (result: any) => {
       if (result) {
+        this.removeWhitespace(result);
         this.user.firstName = result.firstname;
         this.user.lastName = result.lastName;
         this.user.email = result.email;
@@ -70,6 +72,7 @@ export class UserDetailComponent implements OnInit {
     dialogRef.componentInstance.user = { ...this.user };
     dialogRef.afterClosed().subscribe(async (result: any) => {
       if (result) {
+        this.removeWhitespace(result);
         this.user.street = result.street;
         this.user.zipCode = result.zipCode;
         this.user.city = result.city;
@@ -101,5 +104,13 @@ export class UserDetailComponent implements OnInit {
 
   getSingleDocRef(colId: string, docId: string) {
     return doc(collection(this.firestore, colId), docId);
+  }
+
+  removeWhitespace(obj: any) {
+    Object.keys(obj).forEach(key => {
+      if (typeof obj[key] === 'string') {
+        obj[key] = obj[key].trim();
+      }
+    });
   }
 }
