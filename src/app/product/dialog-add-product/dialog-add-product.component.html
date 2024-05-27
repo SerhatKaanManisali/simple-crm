@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>Add product</h1>
+<form [formGroup]="productForm">
+    <mat-dialog-content>
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" formControlName="name">
+            @if (productForm.get('name')?.hasError('required')) {
+            <mat-error>Name is required</mat-error>
+            }
+            @if (productForm.get('name')?.hasError('minlength')) {
+            <mat-error>Name must be at least 2 characters long</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="Description" formControlName="description">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>CPU</mat-label>
+            <input matInput placeholder="CPU" formControlName="cpu">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>GPU</mat-label>
+            <input matInput placeholder="GPU" formControlName="gpu">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Storage</mat-label>
+            <input matInput placeholder="storage" formControlName="storage">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>RAM</mat-label>
+            <input matInput placeholder="RAM" formControlName="ram">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Mainboard</mat-label>
+            <input matInput placeholder="Mainboard" formControlName="mainboard">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>PSU</mat-label>
+            <input matInput placeholder="PSU" formControlName="psu">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Price</mat-label>
+            <input matInput placeholder="Price" formControlName="price" type="number">
+            @if (productForm.get('price')?.hasError('required')) {
+            <mat-error>Price is required</mat-error>
+            }
+            @if (productForm.get('price')?.hasError('min')) {
+            <mat-error>Price must be a positive number</mat-error>
+            }
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button mat-dialog-close>Cancel</button>
+        <button mat-flat-button color="primary" [disabled]="productForm.invalid" [mat-dialog-close]="productForm.value">
+            Save
+        </button>
+    </mat-dialog-actions>
+</form>

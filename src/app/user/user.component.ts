@@ -22,8 +22,7 @@ import { User } from '../interfaces/user.interface';
     MatTableModule,
     RouterModule,
     MatMenuModule,
-    MatTooltipModule,
-    MatSortModule,
+    MatSortModule
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',

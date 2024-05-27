@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Edit address</h1>
 <form [formGroup]="userForm">
     <mat-dialog-content>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="fill">
             <mat-label>Street & house no.</mat-label>
             <input formControlName="street" matInput placeholder="Address" />
             <mat-error *ngIf="userForm.get('street').hasError('required')">
@@ -10,7 +10,7 @@
         </mat-form-field>
 
         <div class="two-fields">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Zip code</mat-label>
                 <input formControlName="zipCode" matInput placeholder="Zip code" />
                 <mat-error *ngIf="userForm.get('zipCode').hasError('required')">
@@ -18,7 +18,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>City</mat-label>
                 <input formControlName="city" matInput placeholder="City" />
                 <mat-error *ngIf="userForm.get('city').hasError('required')">

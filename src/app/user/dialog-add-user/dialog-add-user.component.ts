@@ -7,13 +7,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { User } from '../../interfaces/user.interface';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  Firestore,
-  collection,
-  doc,
-  addDoc,
-  updateDoc,
-} from '@angular/fire/firestore';
+import { Firestore, collection, doc, addDoc, updateDoc } from '@angular/fire/firestore';
+import { CommonModule } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +23,8 @@ import {
     MatInputModule,
     MatDatepickerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss',

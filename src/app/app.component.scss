@@ -35,3 +35,8 @@ mat-nav-list a:hover {
     overflow-y: auto;
     min-height: calc(100vh - 56px);
 }
+
+.active-link {
+    transition: all 100ms ease-in-out;
+    background-color: rgba(0, 0, 0, 0.05);
+}

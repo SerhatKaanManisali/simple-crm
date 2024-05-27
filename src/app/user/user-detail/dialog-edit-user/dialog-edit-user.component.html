@@ -2,7 +2,7 @@
 <form [formGroup]="userForm">
     <mat-dialog-content>
         <div class="two-fields">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>First name</mat-label>
                 <input formControlName="firstName" matInput placeholder="First name" />
                 <mat-error *ngIf="userForm.get('firstName').hasError('required')">
@@ -13,7 +13,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Last name</mat-label>
                 <input formControlName="lastName" matInput placeholder="Last name" />
                 <mat-error *ngIf="userForm.get('lastName').hasError('required')">
@@ -25,7 +25,7 @@
             </mat-form-field>
         </div>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
             <input formControlName="email" matInput placeholder="Email" />
             <mat-error *ngIf="userForm.get('email').hasError('required')">
@@ -39,7 +39,7 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="fill">
             <mat-label>Birth date</mat-label>
             <input formControlName="birthDate" matInput [matDatepicker]="picker" />
             <mat-hint>MM/DD/YYYY</mat-hint>
