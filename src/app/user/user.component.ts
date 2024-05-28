@@ -9,7 +9,6 @@ import { Firestore, collection, collectionData, deleteDoc, doc } from '@angular/
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { User } from '../interfaces/user.interface';
 
 @Component({
   selector: 'app-user',

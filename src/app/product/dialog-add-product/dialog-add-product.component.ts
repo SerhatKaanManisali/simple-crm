@@ -1,10 +1,11 @@
 import { Component, Injectable, inject } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { Firestore, collection, doc, updateDoc, addDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Product } from '../../interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,19 @@ export class DialogAddProductComponent {
   dialog: MatDialog = inject(MatDialog);
   productForm: FormGroup;
   formBuilder: FormBuilder = inject(FormBuilder);
+
+  product: Product = {
+    id: '',
+    name: '',
+    description: '',
+    cpu: '',
+    gpu: '',
+    storage: '',
+    ram: '',
+    mainboard: '',
+    psu: '',
+    price: 0
+  }
 
   constructor() {
     this.productForm = this.formBuilder.group({
@@ -39,6 +53,35 @@ export class DialogAddProductComponent {
   openDialog() {
     const dialogRef = this.dialog.open(DialogAddProductComponent);
 
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      if (result) {
+        this.removeWhitespace(result);
+        await this.addDoc(result);
+      }
+    });
+  }
+
+  async addDoc(product: Product) {
+    await addDoc(this.getProductsRef(), product).then(async (productInfo: any) => {
+      await updateDoc(this.getSingleDocRef('products', productInfo.id), {
+        id: productInfo.id,
+      });
+    });
+  }
+
+  getProductsRef() {
+    return collection(this.firestore, 'products');
+  }
+
+  getSingleDocRef(colId: string, docId: string) {
+    return doc(collection(this.firestore, colId), docId);
+  }
+
+  removeWhitespace(result: any) {
+    Object.keys(result).forEach(key => {
+      if (typeof result[key] === 'string') {
+        result[key] = result[key].trim();
+      }
+    });
   }
 }
