@@ -1,0 +1,56 @@
+@import '../../../styles.scss';
+
+section {
+    @include flexbox($g: 25px, $fd: column);
+    width: 100%;
+}
+
+.product-detail-header {
+    width: 100%;
+    overflow: hidden;
+
+    >img {
+        object-fit: cover;
+        height: 300px;
+    }
+
+    >span {
+        min-height: 100px;
+        width: 100%;
+        background-color: white;
+        padding: 25px;
+
+        >h1 {
+            margin: 0;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        >h2 {
+            margin: 0;
+            font-weight: 400;
+            font-size: 18px;
+            text-wrap: pretty;
+        }
+    }
+}
+
+.specs-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+}
+
+.spec-card {
+    @include flexbox($fd: column);
+    background-color: rgb(19, 191, 248);
+    color: white;
+    padding: 25px 0;
+
+    >button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}

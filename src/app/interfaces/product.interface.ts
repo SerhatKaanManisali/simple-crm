@@ -8,6 +8,7 @@ export interface Product {
     ram: string,
     mainboard: string,
     psu: string,
+    case: string,
     price: number,
     sales?: number
 }

@@ -1,5 +1,15 @@
 @import '../../../styles.scss';
 
+a {
+    text-decoration: none;
+    color: white;
+    transition: all 100ms ease-in-out;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 section {
     @include flexbox($g: 25px, $fd: column);
     width: 100%;
@@ -37,10 +47,6 @@ section {
         font-weight: 500;
     }
 
-    >h2 {
-        margin: 0;
-        font-weight: 400;
-    }
 }
 
 .user-detail-address {

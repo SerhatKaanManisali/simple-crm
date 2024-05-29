@@ -33,6 +33,7 @@ export class DialogAddProductComponent {
     ram: '',
     mainboard: '',
     psu: '',
+    case: '',
     price: 0
   }
 
@@ -46,6 +47,7 @@ export class DialogAddProductComponent {
       ram: [''],
       mainboard: [''],
       psu: [''],
+      case: [''],
       price: ['', [Validators.required, Validators.min(0.01)]],
     });
   }

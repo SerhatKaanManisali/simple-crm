@@ -1,1 +1,26 @@
-<p>product-detail works!</p>
+<section>
+    <mat-card class="product-detail-header">
+        <img src="assets/img/gaming-pc.jpg">
+        <span>
+            <h1>{{product.name}}</h1>
+            <h2>{{product.description}}</h2>
+        </span>
+    </mat-card>
+
+    <div class="specs-container">
+        @for (spec of specs; track $index) {
+        <mat-card class="spec-card">
+            <button mat-icon-button>
+                <img src="assets/img/edit.png">
+            </button>
+            <h3>{{spec.label}}</h3>
+            <p>
+                {{spec.value}}
+                @if (spec.label === 'Price') {
+                €
+                }
+            </p>
+        </mat-card>
+        }
+    </div>
+</section>

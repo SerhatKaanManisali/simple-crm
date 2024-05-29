@@ -47,9 +47,14 @@
             <input matInput placeholder="PSU" formControlName="psu">
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+            <mat-label>Case</mat-label>
+            <input matInput placeholder="Case" formControlName="case">
+        </mat-form-field>
+
         <mat-form-field>
-            <mat-label>Price</mat-label>
-            <input matInput placeholder="Price" formControlName="price" type="number">
+            <mat-label>Price in €</mat-label>
+            <input matInput placeholder="Price in €" formControlName="price" type="number">
             @if (productForm.get('price')?.hasError('required')) {
             <mat-error>Price is required</mat-error>
             }
