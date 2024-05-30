@@ -1,0 +1,15 @@
+@import '../../../../styles.scss';
+
+#salesChart {
+    width: 100%;
+}
+
+
+form {
+    @include flexbox($fd: column);
+    margin-top: 25px;
+
+    >div {
+        @include flexbox($g: 25px);
+    }
+}

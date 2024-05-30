@@ -10,17 +10,19 @@
     <div class="specs-container">
         @for (spec of specs; track $index) {
         <mat-card class="spec-card">
-            <button mat-icon-button>
+            <button mat-icon-button (click)="editComponent(spec)">
                 <img src="assets/img/edit.png">
             </button>
-            <h3>{{spec.label}}</h3>
+            <h3>{{spec.displayLabel}}</h3>
             <p>
                 {{spec.value}}
-                @if (spec.label === 'Price') {
+                @if (spec.label === 'price') {
                 €
                 }
             </p>
         </mat-card>
         }
     </div>
+
+    <app-sales-chart [productId]="productId"></app-sales-chart>
 </section>

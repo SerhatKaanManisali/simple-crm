@@ -48,7 +48,7 @@ export class DialogAddProductComponent {
       mainboard: [''],
       psu: [''],
       case: [''],
-      price: ['', [Validators.required, Validators.min(0.01)]],
+      price: ['', [Validators.required]],
     });
   }
 

@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Edit {{ data.displayLabel }}</h1>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>{{ data.displayLabel }}</mat-label>
+        <input matInput [(ngModel)]="data.value">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-stroked-button (click)="onNoClick()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>
