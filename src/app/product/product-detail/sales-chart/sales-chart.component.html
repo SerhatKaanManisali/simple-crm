@@ -26,6 +26,7 @@
             </mat-form-field>
         </div>
 
-        <button mat-flat-button color="primary" (click)="setSale()">Update Sales</button>
+        <button mat-flat-button color="primary" (click)="setSale()" [disabled]="selectedMonth === ''">Update
+            Sales</button>
     </form>
 </div>

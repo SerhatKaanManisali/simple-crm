@@ -30,33 +30,37 @@ export class SalesChartComponent implements OnInit {
   @Input() productId: string = '';
 
   ngOnInit() {
-    this.getSalesData(this.selectedYear);
+    this.getSalesData();
   }
 
-  async getSalesData(year: number) {
-    const q = query(collection(this.firestore, 'sales'), where('year', '==', year));
+  initializeSalesData(): { month: string, sales: number }[] {
+    return [
+      { month: 'January', sales: 0 },
+      { month: 'February', sales: 0 },
+      { month: 'March', sales: 0 },
+      { month: 'April', sales: 0 },
+      { month: 'May', sales: 0 },
+      { month: 'June', sales: 0 },
+      { month: 'July', sales: 0 },
+      { month: 'August', sales: 0 },
+      { month: 'September', sales: 0 },
+      { month: 'October', sales: 0 },
+      { month: 'November', sales: 0 },
+      { month: 'December', sales: 0 }
+    ];
+  }
+
+  async getSalesData() {
+    const q = query(collection(this.firestore, `products/${this.productId}/sales`), where('year', '==', this.selectedYear));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const salesDoc = querySnapshot.docs[0].data();
       this.salesData = salesDoc['salesData'];
-      this.createChart();
     } else {
-      this.salesData = [
-        { month: 'January', sales: 0 },
-        { month: 'February', sales: 0 },
-        { month: 'March', sales: 0 },
-        { month: 'April', sales: 0 },
-        { month: 'May', sales: 0 },
-        { month: 'June', sales: 0 },
-        { month: 'July', sales: 0 },
-        { month: 'August', sales: 0 },
-        { month: 'September', sales: 0 },
-        { month: 'October', sales: 0 },
-        { month: 'November', sales: 0 },
-        { month: 'December', sales: 0 }
-      ];
-      this.createChart();
+      this.salesData = this.initializeSalesData();
     }
+    this.currentSalesData = [...this.salesData];
+    this.createChart();
   }
 
   createChart() {
@@ -94,7 +98,7 @@ export class SalesChartComponent implements OnInit {
   }
 
   async updateSalesData() {
-    await this.getSalesData(this.selectedYear);
+    await this.getSalesData();
   }
 
   onMonthChange() {
@@ -113,13 +117,14 @@ export class SalesChartComponent implements OnInit {
     } else {
       this.currentSalesData.push({ month: this.selectedMonth, sales: this.selectedSales });
     }
+    this.salesData = [...this.currentSalesData];
     await this.updateSalesDataInFirestore();
     this.createChart();
   }
 
   async updateYear(newYear: number) {
     this.selectedYear = newYear;
-    await this.getSalesData(newYear);
+    await this.getSalesData();
   }
 
   async addSale(month: string, sales: number) {
@@ -134,14 +139,13 @@ export class SalesChartComponent implements OnInit {
   }
 
   async updateSalesDataInFirestore() {
-    const q = query(collection(this.firestore, `product/${this.productId}/sales`), where('year', '==', this.selectedYear));
+    const q = query(collection(this.firestore, `products/${this.productId}/sales`), where('year', '==', this.selectedYear));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const salesDocRef = querySnapshot.docs[0].ref;
       await updateDoc(salesDocRef, { salesData: this.salesData });
     } else {
-      // Wenn kein Dokument für das aktuelle Jahr existiert, füge es hinzu
-      const newDocRef = doc(collection(this.firestore, 'sales'));
+      const newDocRef = doc(collection(this.firestore, `products/${this.productId}/sales`));
       await setDoc(newDocRef, { year: this.selectedYear, salesData: this.salesData });
     }
   }
