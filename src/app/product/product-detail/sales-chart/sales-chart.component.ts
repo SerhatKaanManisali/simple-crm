@@ -5,9 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Chart, ChartConfiguration, ChartItem, registerables } from 'chart.js';
+import { Chart, ChartItem, registerables } from 'chart.js';
 
 Chart.register(...registerables);
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +27,7 @@ export class SalesChartComponent implements OnInit {
   selectedMonth: string = '';
   selectedSales: number = 0;
   salesData: { month: string, sales: number }[] = [];
+  totalSales: number = 0;
   currentSalesData: { month: string, sales: number }[] = [];
   @Input() productId: string = '';
 
@@ -56,8 +58,10 @@ export class SalesChartComponent implements OnInit {
     if (!querySnapshot.empty) {
       const salesDoc = querySnapshot.docs[0].data();
       this.salesData = salesDoc['salesData'];
+      this.totalSales = this.salesData.reduce((sum, data) => sum + data.sales, 0);
     } else {
       this.salesData = this.initializeSalesData();
+      this.totalSales = 0;
     }
     this.currentSalesData = [...this.salesData];
     this.createChart();
@@ -68,16 +72,24 @@ export class SalesChartComponent implements OnInit {
       labels: this.salesData.map(d => d.month),
       datasets: [
         {
-          label: `Sales in ${this.selectedYear}`,
+          label: `Monthly Sales in ${this.selectedYear}`,
           data: this.salesData.map(d => d.sales),
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1
+        },
+        {
+          label: `Total Sales in ${this.selectedYear}`,
+          data: new Array(this.salesData.length).fill(this.totalSales),
+          backgroundColor: 'rgba(192, 75, 75, 0.2)',
+          borderColor: 'rgba(192, 75, 75, 1)',
+          borderWidth: 1,
+          type: 'line'
         }
       ]
     };
 
-    const config: ChartConfiguration = {
+    const config: any = {
       type: 'bar',
       data: data,
       options: {
@@ -118,7 +130,9 @@ export class SalesChartComponent implements OnInit {
       this.currentSalesData.push({ month: this.selectedMonth, sales: this.selectedSales });
     }
     this.salesData = [...this.currentSalesData];
+    this.totalSales = this.salesData.reduce((sum, data) => sum + data.sales, 0);
     await this.updateSalesDataInFirestore();
+    await this.updateTotalSales();
     this.createChart();
   }
 
@@ -134,7 +148,9 @@ export class SalesChartComponent implements OnInit {
     } else {
       this.salesData.push({ month: month, sales: sales });
     }
+    this.totalSales = this.salesData.reduce((sum, data) => sum + data.sales, 0);
     await this.updateSalesDataInFirestore();
+    await this.updateTotalSales();
     this.createChart();
   }
 
@@ -148,5 +164,12 @@ export class SalesChartComponent implements OnInit {
       const newDocRef = doc(collection(this.firestore, `products/${this.productId}/sales`));
       await setDoc(newDocRef, { year: this.selectedYear, salesData: this.salesData });
     }
+  }
+
+  async updateTotalSales() {
+    const productDocRef = doc(this.firestore, `products/${this.productId}`);
+    await updateDoc(productDocRef, {
+      sales: this.totalSales
+    });
   }
 }

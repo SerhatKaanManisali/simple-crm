@@ -8,13 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditComponentComponent } from './dialog-edit-component/dialog-edit-component.component';
 import { SalesChartComponent } from './sales-chart/sales-chart.component';
+import { CommonModule } from '@angular/common';
 
 type ProductKeys = keyof Omit<Product, 'id' | 'name' | 'description' | 'sales'>;
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIconModule, SalesChartComponent],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, SalesChartComponent, CommonModule],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
@@ -26,6 +27,7 @@ export class ProductDetailComponent implements OnInit {
   productId = '';
   product: Product = {
     id: '',
+    img: '',
     name: '',
     description: '',
     cpu: '',

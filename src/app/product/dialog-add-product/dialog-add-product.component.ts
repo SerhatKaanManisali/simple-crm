@@ -25,6 +25,7 @@ export class DialogAddProductComponent {
 
   product: Product = {
     id: '',
+    img: '',
     name: '',
     description: '',
     cpu: '',
@@ -58,6 +59,7 @@ export class DialogAddProductComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       if (result) {
         this.removeWhitespace(result);
+        result.img = this.getRandomColor();
         await this.addDoc(result);
       }
     });
@@ -85,5 +87,20 @@ export class DialogAddProductComponent {
         result[key] = result[key].trim();
       }
     });
+  }
+
+  getRandomColor(): string {
+    let hue, saturation, lightness;
+    do {
+      hue = Math.floor(Math.random() * 360);
+      saturation = Math.floor(Math.random() * 50) + 50;
+      lightness = Math.floor(Math.random() * 40) + 40;
+    } while (this.isBrown(hue, saturation, lightness));
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+  isBrown(hue: number, saturation: number, lightness: number): boolean {
+    return hue >= 30 && hue <= 45 && saturation >= 20 && saturation <= 50 && lightness >= 30 && lightness <= 60;
   }
 }
