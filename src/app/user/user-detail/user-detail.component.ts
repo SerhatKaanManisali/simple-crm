@@ -1,14 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { MatCardModule } from "@angular/material/card";
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu'
+import { MatMenuModule } from '@angular/material/menu';
 import { DialogEditUserComponent } from './dialog-edit-user/dialog-edit-user.component';
 import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-user-detail',
@@ -18,6 +23,11 @@ import { MatDialog } from '@angular/material/dialog';
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
+    MatTooltipModule,
+    MatListModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
   ],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.scss'
@@ -38,27 +48,44 @@ export class UserDetailComponent implements OnInit {
     street: '',
     zipCode: 12345,
     city: '',
-    fullName: ''
+    fullName: '',
+    purchaseHistory: [],
+    notes: ''
   };
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.params['id'];
-    this.getUser();
+    this.subscribeToUser();
+    this.subscribeToPurchaseHistory();
   }
 
-  async getUser() {
-    await getDoc(doc(this.firestore, 'users', this.userId)).then((user: any) => {
-      this.user = user.data();
+  subscribeToUser() {
+    const userDocRef = doc(this.firestore, 'users', this.userId);
+    onSnapshot(userDocRef, (userDoc) => {
+      this.user = userDoc.data() as User;
+    });
+  }
+
+  subscribeToPurchaseHistory() {
+    const productsCollection = collection(this.firestore, 'products');
+    onSnapshot(productsCollection, (querySnapshot) => {
+      const purchaseHistory: any[] = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.data()['id'] === this.userId) {
+          purchaseHistory.push(doc.data());
+        }
+      });
+      this.user.purchaseHistory = purchaseHistory;
     });
   }
 
   openUserEditor() {
     const dialogRef = this.dialog.open(DialogEditUserComponent);
-    dialogRef.componentInstance.user = { ...this.user }
+    dialogRef.componentInstance.user = { ...this.user };
     dialogRef.afterClosed().subscribe(async (result: any) => {
       if (result) {
         this.removeWhitespace(result);
-        this.user.firstName = result.firstname;
+        this.user.firstName = result.firstName;
         this.user.lastName = result.lastName;
         this.user.email = result.email;
         this.user.birthDate = result.birthDate;
@@ -98,12 +125,14 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  getUsersRef() {
-    return collection(this.firestore, 'users');
+  async saveNotes(notes: string) {
+    await updateDoc(this.getSingleDocRef('users', this.user.id), {
+      notes: notes
+    });
   }
 
   getSingleDocRef(colId: string, docId: string) {
-    return doc(collection(this.firestore, colId), docId);
+    return doc(this.firestore, colId, docId);
   }
 
   removeWhitespace(obj: any) {

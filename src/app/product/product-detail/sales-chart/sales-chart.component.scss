@@ -1,5 +1,13 @@
 @import '../../../../styles.scss';
 
+section>span {
+    @include flexbox();
+    width: 100%;
+    justify-content: center;
+    margin-top: 25px;
+    font-size: 16px;
+}
+
 #salesChart {
     width: 100%;
 }

@@ -9,4 +9,6 @@ export interface User {
     zipCode: number;
     city: string;
     fullName: string;
+    purchaseHistory: any[];
+    notes: string;
 }

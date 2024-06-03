@@ -45,7 +45,9 @@ export class DialogAddUserComponent {
     street: '',
     zipCode: 12345,
     city: '',
-    fullName: ''
+    fullName: '',
+    purchaseHistory: [],
+    notes: ''
   };
 
   loading: boolean = false;

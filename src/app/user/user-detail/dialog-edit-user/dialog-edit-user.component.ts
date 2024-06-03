@@ -28,7 +28,9 @@ export class DialogEditUserComponent {
     street: '',
     zipCode: 12345,
     city: '',
-    fullName: ''
+    fullName: '',
+    purchaseHistory: [],
+    notes: ''
   };
 
   constructor() {

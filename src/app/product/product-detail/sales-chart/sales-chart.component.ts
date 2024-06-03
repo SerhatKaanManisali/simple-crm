@@ -77,14 +77,6 @@ export class SalesChartComponent implements OnInit {
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1
-        },
-        {
-          label: `Total Sales in ${this.selectedYear}`,
-          data: new Array(this.salesData.length).fill(this.totalSales),
-          backgroundColor: 'rgba(192, 75, 75, 0.2)',
-          borderColor: 'rgba(192, 75, 75, 1)',
-          borderWidth: 1,
-          type: 'line'
         }
       ]
     };

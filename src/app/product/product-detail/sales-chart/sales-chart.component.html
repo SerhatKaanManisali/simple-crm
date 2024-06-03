@@ -1,5 +1,6 @@
-<div>
+<section>
     <canvas id="salesChart"></canvas>
+    <span class="total-sales">Total Sales for {{ selectedYear }}: {{ totalSales }}</span>
     <form>
         <div>
             <mat-form-field>
@@ -29,4 +30,4 @@
         <button mat-flat-button color="primary" (click)="setSale()" [disabled]="selectedMonth === ''">Update
             Sales</button>
     </form>
-</div>
+</section>

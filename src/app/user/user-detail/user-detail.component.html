@@ -11,7 +11,7 @@
             <h1>{{user.firstName}} {{user.lastName}}</h1>
             <span>
                 <a href="mailto:{{user.email}}">{{user.email}}</a> <br>
-                <a href="tel:{{user?.phone}}">{{user.phone}}</a>
+                <a href="tel:{{user.phone}}">{{user.phone}}</a>
             </span>
         </span>
     </mat-card>
@@ -29,4 +29,37 @@
             {{user.zipCode}} {{user.city}}
         </mat-card-content>
     </mat-card>
+
+    <div class="last-section">
+        <mat-card class="user-detail-purchase-history">
+            <mat-card-header><mat-card-title>Purchase History</mat-card-title></mat-card-header>
+            <mat-card-content>
+                @if (user.purchaseHistory.length > 0) {
+                <mat-list>
+                    @for (product of user.purchaseHistory; track $index) {
+                    <mat-list-item>
+                        <span matListItemTitle><strong>{{product.name}}</strong></span>
+                        <span matListItemLine>{{product.purchaseDate}}</span>
+                    </mat-list-item>
+                    }
+                </mat-list>
+                } @else {
+                <span>
+                    <p>No purchases found.</p>
+                </span>
+                }
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="user-detail-notes">
+            <mat-form-field>
+                <textarea [(ngModel)]="user.notes" (ngModelChange)="saveNotes($event)" matInput placeholder="Notes"
+                    rows="14"></textarea>
+            </mat-form-field>
+        </mat-card>
+    </div>
+
+    <button class="add-purchase-button" mat-fab color="primary" matTooltip="Add purchase">
+        <img src="assets/img/add.png">
+    </button>
 </section>
