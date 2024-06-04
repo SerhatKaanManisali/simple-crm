@@ -1,19 +1,59 @@
-import { Component, Injectable, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-@Injectable({
-  providedIn: 'root'
-})
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-dialog-add-purchase',
   standalone: true,
-  imports: [],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './dialog-add-purchase.component.html',
-  styleUrl: './dialog-add-purchase.component.scss'
+  styleUrls: ['./dialog-add-purchase.component.scss']
 })
-export class DialogAddPurchaseComponent {
+export class DialogAddPurchaseComponent implements OnInit {
+  firestore: Firestore = inject(Firestore);
   dialog: MatDialog = inject(MatDialog);
+  purchaseForm: FormGroup;
+  formBuilder: FormBuilder = inject(FormBuilder);
 
-  openDialog() {
-    const dialogRef = this.dialog.open
+  purchase = {
+    name: '',
+    purchaseDate: ''
+  };
+
+  products: any[] = [];
+
+  constructor() {
+    this.purchaseForm = this.formBuilder.group({
+      product: ['', [Validators.required]],
+      purchaseDate: ['', [Validators.required]],
+    });
+  }
+
+  ngOnInit() {
+    this.subscribeToProducts();
+  }
+
+  subscribeToProducts() {
+    const productsCollection = collection(this.firestore, 'products');
+    onSnapshot(productsCollection, (querySnapshot) => {
+      this.products = querySnapshot.docs
+        .map(doc => doc.data())
+        .sort((a, b) => a['name'].localeCompare(b['name']));
+    });
   }
 }

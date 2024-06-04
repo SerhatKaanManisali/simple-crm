@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Firestore, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, onSnapshot, updateDoc, where } from '@angular/fire/firestore';
 import { MatCardModule } from "@angular/material/card";
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
@@ -14,6 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { DialogAddPurchaseComponent } from './dialog-add-purchase/dialog-add-purchase.component';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-user-detail',
@@ -30,7 +32,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule
   ],
   templateUrl: './user-detail.component.html',
-  styleUrl: './user-detail.component.scss'
+  styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
   firestore: Firestore = inject(Firestore);
@@ -67,15 +69,31 @@ export class UserDetailComponent implements OnInit {
   }
 
   subscribeToPurchaseHistory() {
-    const productsCollection = collection(this.firestore, 'products');
-    onSnapshot(productsCollection, (querySnapshot) => {
+    const purchasesCollection = collection(this.firestore, 'products') as any;
+    const q = query(purchasesCollection, where('id', '==', this.userId) as any);
+
+    onSnapshot(q as any, (querySnapshot: any) => {
       const purchaseHistory: any[] = [];
-      querySnapshot.forEach((doc) => {
-        if (doc.data()['id'] === this.userId) {
-          purchaseHistory.push(doc.data());
-        }
+      querySnapshot.forEach((doc: any) => {
+        purchaseHistory.push(doc.data());
       });
-      this.user.purchaseHistory = purchaseHistory;
+      this.user.purchaseHistory = purchaseHistory.sort((a, b) => {
+        return new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
+      });
+    });
+  }
+
+  openPurchaseDialog() {
+    const dialogRef = this.dialog.open(DialogAddPurchaseComponent);
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      if (result) {
+        result.purchaseDate = this.formatDate(result.purchaseDate);
+        this.user.purchaseHistory.push(result);
+        this.user.purchaseHistory.sort((a, b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime());
+        await updateDoc(this.getSingleDocRef('users', this.user.id), {
+          purchaseHistory: this.user.purchaseHistory
+        });
+      }
     });
   }
 
@@ -110,8 +128,8 @@ export class UserDetailComponent implements OnInit {
 
   async updateUser() {
     await updateDoc(this.getSingleDocRef('users', this.user.id), {
-      firstname: this.user.firstName,
-      lastname: this.user.lastName,
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
       email: this.user.email,
       birthDate: this.user.birthDate
     });
@@ -141,5 +159,10 @@ export class UserDetailComponent implements OnInit {
         obj[key] = obj[key].trim();
       }
     });
+  }
+
+  formatDate(date: string): string {
+    const d = new Date(date);
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   }
 }

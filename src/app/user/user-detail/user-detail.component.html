@@ -38,7 +38,7 @@
                 <mat-list>
                     @for (product of user.purchaseHistory; track $index) {
                     <mat-list-item>
-                        <span matListItemTitle><strong>{{product.name}}</strong></span>
+                        <span matListItemTitle>{{product.name}}</span>
                         <span matListItemLine>{{product.purchaseDate}}</span>
                     </mat-list-item>
                     }
@@ -59,7 +59,8 @@
         </mat-card>
     </div>
 
-    <button class="add-purchase-button" mat-fab color="primary" matTooltip="Add purchase">
+    <button class="add-purchase-button" (click)="openPurchaseDialog()" mat-fab color="primary"
+        matTooltip="Add purchase">
         <img src="assets/img/add.png">
     </button>
 </section>

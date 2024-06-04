@@ -4,26 +4,32 @@
         <mat-form-field appearance="fill">
             <mat-label>Street & house no.</mat-label>
             <input formControlName="street" matInput placeholder="Address" />
-            <mat-error *ngIf="userForm.get('street').hasError('required')">
+            @if (userForm.get('street')?.hasError('required')) {
+            <mat-error>
                 Street & house no. is required
             </mat-error>
+            }
         </mat-form-field>
 
         <div class="two-fields">
             <mat-form-field appearance="fill">
                 <mat-label>Zip code</mat-label>
                 <input formControlName="zipCode" matInput placeholder="Zip code" />
-                <mat-error *ngIf="userForm.get('zipCode').hasError('required')">
+                @if (userForm.get('zipCode')?.hasError('required')) {
+                <mat-error>
                     Zip code is required
                 </mat-error>
+                }
             </mat-form-field>
 
             <mat-form-field appearance="fill">
                 <mat-label>City</mat-label>
                 <input formControlName="city" matInput placeholder="City" />
-                <mat-error *ngIf="userForm.get('city').hasError('required')">
+                @if (userForm.get('city')?.hasError('required')) {
+                <mat-error>
                     City is required
                 </mat-error>
+                }
             </mat-form-field>
         </div>
     </mat-dialog-content>

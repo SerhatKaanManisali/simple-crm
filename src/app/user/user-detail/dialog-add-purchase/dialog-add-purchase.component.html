@@ -1,1 +1,24 @@
-<p>dialog-add-purchase works!</p>
+<h1 mat-dialog-title>Add Purchase</h1>
+<form [formGroup]="purchaseForm">
+    <mat-dialog-content>
+        <mat-form-field>
+            <mat-label>Product</mat-label>
+            <mat-select formControlName="product" [(ngModel)]="purchase.name">
+                @for (product of products; track $index) {
+                <mat-option [value]="product.name">
+                    {{product.name}}
+                </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Purchase date</mat-label>
+            <input formControlName="purchaseDate" matInput [(ngModel)]="purchase.purchaseDate" type="date" />
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+        <button mat-stroked-button mat-dialog-close>Cancel</button>
+        <button mat-flat-button color="primary" [disabled]="purchaseForm.invalid"
+            [mat-dialog-close]="purchase">Save</button>
+    </mat-dialog-actions>
+</form>
