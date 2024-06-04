@@ -1,0 +1,7 @@
+@import '../../../styles.scss';
+
+div {
+    @include flexbox();
+    height: 450px;
+    width: 100%;
+}
