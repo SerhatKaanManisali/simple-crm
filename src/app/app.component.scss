@@ -5,6 +5,10 @@
 .sidenav {
     width: 300px;
     box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+        width: 240px;
+    }
 }
 
 .logo-container {
@@ -32,8 +36,12 @@ mat-nav-list a:hover {
 
 .router-container {
     padding: 16px 30px;
-    overflow-y: auto;
+    overflow: hidden;
     min-height: calc(100vh - 56px);
+
+    @media (max-width: 768px) {
+        padding: 16px 20px;
+    }
 }
 
 .active-link {
