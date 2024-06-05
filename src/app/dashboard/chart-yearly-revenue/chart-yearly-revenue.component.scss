@@ -1,7 +1,16 @@
 @import '../../../styles.scss';
 
-div {
-    @include flexbox();
-    height: 450px;
+mat-card {
+    @include flexbox($fd: column);
+    height: 447px;
     width: 100%;
+    padding: 25px;
+
+    >canvas {
+        width: 100%;
+    }
+
+    >mat-form-field {
+        margin-top: 10px;
+    }
 }

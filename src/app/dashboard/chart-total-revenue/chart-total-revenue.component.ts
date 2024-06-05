@@ -1,11 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import { MatCardModule } from '@angular/material/card';
 import { Chart } from 'chart.js/auto';
 
 @Component({
   selector: 'app-chart-total-revenue',
   standalone: true,
-  imports: [],
+  imports: [MatCardModule],
   templateUrl: './chart-total-revenue.component.html',
   styleUrl: './chart-total-revenue.component.scss'
 })
@@ -77,7 +78,7 @@ export class ChartTotalRevenueComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'Total revenue Distribution by Product'
+            text: 'Total revenue distribution by product'
           }
         }
       }

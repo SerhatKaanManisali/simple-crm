@@ -1,7 +1,12 @@
 @import '../../../styles.scss';
 
-div {
-    @include flexbox();
-    height: 450px;
+mat-card {
+    @include flexbox($fd: column);
+    height: 400px;
     width: 100%;
+    padding: 25px 0;
+
+    >canvas {
+        width: 100%;
+    }
 }

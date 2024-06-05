@@ -5,7 +5,7 @@
         <div>
             <mat-form-field>
                 <mat-label>Year</mat-label>
-                <mat-select [(value)]="selectedYear" (selectionChange)="updateSalesData()" class="select-year">
+                <mat-select [(value)]="selectedYear" (selectionChange)="updateSalesData()">
                     @for (year of years; track year) {
                     <mat-option [value]="year">{{year}}</mat-option>
                     }
