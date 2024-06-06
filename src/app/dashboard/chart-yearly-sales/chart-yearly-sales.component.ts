@@ -142,7 +142,7 @@ export class ChartYearlySalesComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'Yearly sales distribution by product'
+            text: 'Yearly sales distribution by product in €'
           }
         },
         scales: {

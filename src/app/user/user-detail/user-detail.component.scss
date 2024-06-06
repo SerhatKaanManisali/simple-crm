@@ -13,6 +13,11 @@ a {
 section {
     @include flexbox($g: 25px, $fd: column);
     width: 100%;
+    margin-top: 50px;
+
+    @media (max-width: 510px) {
+        padding-bottom: 150px;
+    }
 }
 
 .user-detail-header {
@@ -22,6 +27,8 @@ section {
     min-height: 250px;
     color: white;
 
+    @media (max-width: 425px) {}
+
     >img {
         height: 100px;
         width: 100px;
@@ -29,6 +36,11 @@ section {
         margin-left: 25px;
         margin-bottom: 25px;
         object-fit: cover;
+
+        @media (max-width: 425px) {
+            height: 75px;
+            width: 75px;
+        }
     }
 
     >mat-card {
@@ -47,10 +59,19 @@ section {
         font-weight: 500;
     }
 
+    @media (max-width: 425px) {
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
+
 }
 
 .user-detail-address {
     width: 100%;
+
+    @media (max-width: 510px) {
+        margin-bottom: 130px;
+    }
 }
 
 .more-button {
@@ -65,7 +86,7 @@ section {
 }
 
 .add-purchase-button {
-    position: absolute;
+    position: fixed;
     bottom: 16px;
     right: 30px;
 
@@ -79,6 +100,10 @@ section {
     @include flexbox($g: 25px);
     width: 100%;
     height: 380px;
+
+    @media (max-width: 510px) {
+        @include flexbox($fd: column, $g: 15px);
+    }
 }
 
 .user-detail-purchase-history {

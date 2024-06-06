@@ -20,3 +20,10 @@ mat-dialog-actions {
     margin-top: 4px;
     width: 100%;
 }
+
+@media (max-width: 600px) {
+
+    mat-dialog-content {
+        min-width: unset;
+    }
+}

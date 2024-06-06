@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, HostListener, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -26,21 +26,22 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })
-export class UserComponent implements OnDestroy, AfterViewInit {
+export class UserComponent implements OnDestroy, AfterViewInit, OnInit {
   firestore = inject(Firestore);
   dialogAddUser: DialogAddUserComponent = inject(DialogAddUserComponent);
   route: ActivatedRoute = inject(ActivatedRoute);
   router: RouterModule = inject(RouterModule);
   displayedColumns: string[] = [
     'name',
-    'email',
-    'phone',
+    'city',
+    'birthDate',
     'more-options'
   ];
 
   dataSource = new MatTableDataSource();
   users$;
   users;
+  isScreenWide = window.innerWidth > 425;
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -58,8 +59,26 @@ export class UserComponent implements OnDestroy, AfterViewInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isScreenWide = window.innerWidth > 425;
+    this.updateDisplayedColumns();
+  }
+
+  updateDisplayedColumns() {
+    if (this.isScreenWide) {
+      this.displayedColumns = ['name', 'city', 'birthDate', 'more-options'];
+    } else {
+      this.displayedColumns = ['name', 'city', 'more-options'];
+    }
+  }
+
   async deleteUser(userId: string) {
     await deleteDoc(doc(this.firestore, 'users', userId));
+  }
+
+  ngOnInit() {
+    this.updateDisplayedColumns();
   }
 
   ngAfterViewInit() {

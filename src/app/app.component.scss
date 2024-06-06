@@ -6,7 +6,7 @@
     width: 300px;
     box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
 
-    @media (max-width: 768px) {
+    @media (max-width: 800px) {
         width: 240px;
     }
 }
@@ -27,6 +27,8 @@ mat-toolbar,
 mat-toolbar-row {
     min-height: 56px;
     height: 56px;
+    position: fixed;
+    z-index: 1;
 }
 
 mat-nav-list a:hover {
@@ -39,7 +41,7 @@ mat-nav-list a:hover {
     overflow: hidden;
     min-height: calc(100vh - 56px);
 
-    @media (max-width: 768px) {
+    @media (max-width: 800px) {
         padding: 16px 20px;
     }
 }

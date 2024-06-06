@@ -5,8 +5,12 @@ mat-spinner {
     transform: translate(-50%, -50%);
 }
 
+table {
+    margin-top: 50px;
+}
+
 .add-user-button {
-    position: absolute;
+    position: fixed;
     right: 30px;
     bottom: 16px;
 }
@@ -15,4 +19,10 @@ mat-spinner {
     transition: all 100ms ease-in-out;
     background-color: rgba(0, 0, 0, 0.05);
     cursor: pointer;
+}
+
+@media (max-width: 427px) {
+    table {
+        width: 80% !important;
+    }
 }

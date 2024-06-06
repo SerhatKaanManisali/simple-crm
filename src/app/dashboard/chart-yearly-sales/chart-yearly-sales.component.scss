@@ -10,18 +10,37 @@ mat-card {
         @include flexbox();
         width: 100%;
         height: 85%;
+
+        @media (max-width: 1460px) {
+            width: 95%;
+        }
+
+        @media (max-width: 1200px) {
+            width: 100%;
+        }
+
+        @media (max-width: 615px) {
+            width: 100%;
+        }
     }
 
-    @media (max-width: 1480px) {
+    @media (max-width: 780px) {
         height: 350px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 615px) {
         height: 300px;
     }
-}
 
-canvas {
-    width: 100%;
-    height: 100%;
+    // @media (max-width: 1075px) {
+    //     height: 447px;
+    // }
+
+    // @media (max-width: 800px) {
+    //     height: 300px;
+    // }
+
+    // @media (max-width: 530px) {
+    //     height: 250px;
+    // }
 }

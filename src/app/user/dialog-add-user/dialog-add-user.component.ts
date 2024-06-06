@@ -1,4 +1,4 @@
-import { Component, Injectable, inject } from '@angular/core';
+import { Component, Injectable, inject, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,6 +51,7 @@ export class DialogAddUserComponent {
   };
 
   loading: boolean = false;
+  isScreenSmall = window.innerWidth < 400;
 
   constructor() {
     this.userForm = this.formBuilder.group({
@@ -63,6 +64,11 @@ export class DialogAddUserComponent {
       zipCode: ['', Validators.required],
       city: ['', Validators.required]
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isScreenSmall = window.innerWidth < 400;
   }
 
   openDialog() {

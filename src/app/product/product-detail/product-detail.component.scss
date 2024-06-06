@@ -3,6 +3,7 @@
 section {
     @include flexbox($g: 25px, $fd: column);
     width: 100%;
+    margin-top: 50px;
 }
 
 .product-detail-header {
@@ -47,6 +48,10 @@ section {
     color: white;
     padding: 25px 0;
 
+    >p {
+        text-align: center;
+    }
+
     >button {
         position: absolute;
         top: 0;
@@ -56,4 +61,10 @@ section {
 
 app-sales-chart {
     width: 100%;
+}
+
+@media (max-width: 768px) {
+    .specs-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

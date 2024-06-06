@@ -1,17 +1,15 @@
 @import '../../../../styles.scss';
 
-section>span {
-    @include flexbox();
-    width: 100%;
-    justify-content: center;
-    margin-top: 25px;
-    font-size: 16px;
-}
+section {
+    >span {
+        @include flexbox();
+        width: 100%;
+        justify-content: center;
+        margin-top: 25px;
+        font-size: 16px;
+    }
 
-#salesChart {
-    width: 100%;
 }
-
 
 form {
     @include flexbox($fd: column);
@@ -19,5 +17,9 @@ form {
 
     >div {
         @include flexbox($g: 25px);
+
+        @media (max-width: 768px) {
+            @include flexbox($fd: column, $g: 10px);
+        }
     }
 }
