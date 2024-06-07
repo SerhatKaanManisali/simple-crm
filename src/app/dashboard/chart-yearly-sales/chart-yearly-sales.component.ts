@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js/auto';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Component, OnInit, inject } from '@angular/core';
+import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { Chart, ChartConfiguration } from 'chart.js/auto';
 
 @Component({
   selector: 'app-chart-yearly-sales',
@@ -15,107 +15,82 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./chart-yearly-sales.component.scss']
 })
 export class ChartYearlySalesComponent implements OnInit {
-  firestore: Firestore;
-  chart: Chart | undefined;
+  firestore: Firestore = inject(Firestore);
+  chart: Chart<'pie', number[], string> | undefined;
   availableYears: number[] = [];
   selectedYear: number;
 
-  constructor(firestore: Firestore) {
-    this.firestore = firestore;
+  constructor() {
     this.selectedYear = new Date().getFullYear();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadAvailableYears();
+    this.loadSalesData(this.selectedYear);
   }
 
-  async loadAvailableYears() {
+  async loadAvailableYears(): Promise<void> {
     const productsCollection = collection(this.firestore, 'products');
-    const productsSnapshot = await getDocs(productsCollection);
-    const yearsSet = new Set<number>();
+    const snapshot = await getDocs(productsCollection);
 
-    for (const doc of productsSnapshot.docs) {
-      const salesCollection = collection(this.firestore, `products/${doc.id}/sales`);
-      const salesSnapshot = await getDocs(salesCollection);
+    const yearsSet: Set<number> = new Set();
 
-      salesSnapshot.forEach(salesDoc => {
-        const data = salesDoc.data();
-        if (data['year']) {
-          yearsSet.add(data['year']);
+    for (const doc of snapshot.docs) {
+      const salesSubCollection = collection(doc.ref, 'sales');
+      const salesSnapshot = await getDocs(salesSubCollection);
+
+      salesSnapshot.forEach((salesDoc) => {
+        const year = salesDoc.data()['year'];
+        if (year) {
+          yearsSet.add(year);
         }
       });
     }
 
-    this.availableYears = Array.from(yearsSet).sort((a, b) => a - b);
-    this.loadSalesData(this.selectedYear);
+    this.availableYears = Array.from(yearsSet).sort((a, b) => b - a);
+    if (this.availableYears.length > 0) {
+      this.selectedYear = this.availableYears[0];
+    }
   }
 
-  async onYearChange(event: any) {
+  onYearChange(event: any): void {
     this.selectedYear = event.value;
     this.loadSalesData(this.selectedYear);
   }
 
   async loadSalesData(year: number) {
     const productsCollection = collection(this.firestore, 'products');
-    const salesData: { [key: string]: { [key: string]: number } } = {
-      'January': {},
-      'February': {},
-      'March': {},
-      'April': {},
-      'May': {},
-      'June': {},
-      'July': {},
-      'August': {},
-      'September': {},
-      'October': {},
-      'November': {},
-      'December': {},
+
+    const salesData: { [key: string]: number } = {
+      'High-End Gaming-PC': 0,
+      'Mid-Range Gaming-PC': 0,
+      'Budget Gaming-PC': 0,
     };
 
-    const productsSnapshot = await getDocs(productsCollection);
-    const productNames: string[] = [];
+    const snapshot = await getDocs(productsCollection);
 
-    const promises = productsSnapshot.docs.map(async (doc) => {
-      const productName = doc.data()['name'];
-      productNames.push(productName);
+    for (const doc of snapshot.docs) {
+      const salesSubCollection = collection(doc.ref, 'sales');
+      const yearQuery = query(salesSubCollection, where('year', '==', year));
+      const salesSnapshot = await getDocs(yearQuery);
 
-      const salesCollection = collection(this.firestore, `products/${doc.id}/sales`);
-      const salesQuerySnapshot = await getDocs(salesCollection);
+      salesSnapshot.forEach((salesDoc) => {
+        const productSalesData = salesDoc.data()['salesData'] || [];
+        const totalSales = productSalesData.reduce((sum: number, item: any) => sum + item.sales, 0);
 
-      salesQuerySnapshot.forEach((salesDoc) => {
-        const data = salesDoc.data();
-        if (data['year'] === year && Array.isArray(data['salesData'])) {
-          data['salesData'].forEach((monthData: { month: string, sales: number }) => {
-            if (salesData[monthData.month] !== undefined) {
-              if (!salesData[monthData.month][productName]) {
-                salesData[monthData.month][productName] = 0;
-              }
-              salesData[monthData.month][productName] += monthData.sales;
-            }
-          });
+        if (doc.id === 'Cjaq6S3mkcCxsSpL4DhV') {
+          salesData['High-End Gaming-PC'] += totalSales;
+        } else if (doc.id === 'm1lnUb1y00dmkludaIBl') {
+          salesData['Mid-Range Gaming-PC'] += totalSales;
+        } else if (doc.id === 'aAbXmau9g9yOXNigIcJY') {
+          salesData['Budget Gaming-PC'] += totalSales;
         }
       });
-    });
-
-    await Promise.all(promises);
-
-    this.renderChart(Object.keys(salesData), salesData, productNames);
+    }
+    this.renderChart(Object.keys(salesData), Object.values(salesData));
   }
 
-  renderChart(labels: string[], salesData: { [key: string]: { [key: string]: number } }, productNames: string[]) {
-    const datasets = productNames.map((productName, index) => {
-      const color = ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'][index];
-      const borderColor = ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'][index];
-
-      return {
-        label: productName,
-        data: labels.map(label => salesData[label][productName] || 0),
-        backgroundColor: color,
-        borderColor: borderColor,
-        borderWidth: 1,
-      };
-    });
-
+  renderChart(labels: string[], data: number[]): void {
     const canvas = document.getElementById('yearly-sales-chart') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
 
@@ -128,11 +103,15 @@ export class ChartYearlySalesComponent implements OnInit {
       this.chart.destroy();
     }
 
-    this.chart = new Chart(ctx, {
-      type: 'bar',
+    const chartConfig: ChartConfiguration<'pie', number[], string> = {
+      type: 'pie',
       data: {
         labels: labels,
-        datasets: datasets
+        datasets: [{
+          label: `Sales for ${this.selectedYear}`,
+          data: data,
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        }]
       },
       options: {
         responsive: true,
@@ -142,19 +121,12 @@ export class ChartYearlySalesComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'Yearly sales distribution by product in €'
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            stacked: true
-          },
-          x: {
-            stacked: true
+            text: `Sales distribution by product for ${this.selectedYear}`
           }
         }
       }
-    });
+    };
+
+    this.chart = new Chart(ctx, chartConfig);
   }
 }
