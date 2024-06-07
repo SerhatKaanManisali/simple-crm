@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -37,17 +37,18 @@ export class ProductComponent implements OnDestroy, AfterViewInit {
   ];
 
   dataSource = new MatTableDataSource();
-  products$;
-  products;
+  products$: any;
+  products: any;
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) { }
+
+  async ngOnInit() {
     this.products$ = collectionData(collection(this.firestore, 'products'));
     if (this.products$) {
-      this.products = this.products$.subscribe((products) => {
+      this.products = this.products$.subscribe((products: any) => {
         this.dataSource.data = products;
-        this.dataSource.sort = this.sort;
       });
     }
   }
@@ -57,12 +58,22 @@ export class ProductComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => {
+      this.cdr.detectChanges();
+    });
+
     this.dataSource.sort = this.sort;
+    this.setDefaultSort();
   }
 
   ngOnDestroy() {
     if (this.products) {
       this.products.unsubscribe();
     }
+  }
+
+  private setDefaultSort() {
+    this.sort.sort({ id: 'price', start: 'desc', disableClear: false });
+    this.cdr.detectChanges();
   }
 }

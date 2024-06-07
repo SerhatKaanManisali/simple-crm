@@ -22,7 +22,6 @@ section {
 
 .user-detail-header {
     @include flexbox($jc: flex-start, $ai: flex-end);
-    background-color: #ff2d2d;
     width: 100%;
     min-height: 250px;
     color: white;

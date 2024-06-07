@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Firestore, collection, doc, onSnapshot, updateDoc, where } from '@angular/fire/firestore';
+import { Firestore, collection, doc, onSnapshot, updateDoc, query, where } from '@angular/fire/firestore';
 import { MatCardModule } from "@angular/material/card";
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { DialogAddPurchaseComponent } from './dialog-add-purchase/dialog-add-purchase.component';
-import { query } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-detail',
@@ -29,7 +29,8 @@ import { query } from '@angular/animations';
     MatListModule,
     MatFormFieldModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    CommonModule
   ],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
@@ -42,6 +43,7 @@ export class UserDetailComponent implements OnInit {
   userId = '';
   user: User = {
     id: '',
+    img: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -69,12 +71,12 @@ export class UserDetailComponent implements OnInit {
   }
 
   subscribeToPurchaseHistory() {
-    const purchasesCollection = collection(this.firestore, 'products') as any;
-    const q = query(purchasesCollection, where('id', '==', this.userId) as any);
+    const purchasesCollection = collection(this.firestore, 'products');
+    const q = query(purchasesCollection, where('userId', '==', this.userId));
 
-    onSnapshot(q as any, (querySnapshot: any) => {
+    onSnapshot(q, (querySnapshot) => {
       const purchaseHistory: any[] = [];
-      querySnapshot.forEach((doc: any) => {
+      querySnapshot.forEach((doc) => {
         purchaseHistory.push(doc.data());
       });
       this.user.purchaseHistory = purchaseHistory.sort((a, b) => {

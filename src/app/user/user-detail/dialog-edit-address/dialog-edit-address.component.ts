@@ -19,6 +19,7 @@ export class DialogEditAddressComponent {
 
   user: User = {
     id: '',
+    img: '',
     firstName: '',
     lastName: '',
     email: '',

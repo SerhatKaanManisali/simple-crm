@@ -37,6 +37,7 @@ export class DialogAddUserComponent {
 
   user: User = {
     id: '',
+    img: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -78,6 +79,7 @@ export class DialogAddUserComponent {
       if (result && result.birthDate) {
         result.birthDate = result.birthDate.getTime();
         this.removeWhitespace(result);
+        result.img = this.getRandomColor();
         await this.addDoc(result);
       } else if (result) {
         this.removeWhitespace(result);
@@ -110,5 +112,20 @@ export class DialogAddUserComponent {
         result[key] = result[key].trim();
       }
     });
+  }
+
+  getRandomColor(): string {
+    let hue, saturation, lightness;
+    do {
+      hue = Math.floor(Math.random() * 360);
+      saturation = Math.floor(Math.random() * 50) + 50;
+      lightness = Math.floor(Math.random() * 40) + 40;
+    } while (this.isBrown(hue, saturation, lightness));
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+  isBrown(hue: number, saturation: number, lightness: number): boolean {
+    return hue >= 30 && hue <= 45 && saturation >= 20 && saturation <= 50 && lightness >= 30 && lightness <= 60;
   }
 }

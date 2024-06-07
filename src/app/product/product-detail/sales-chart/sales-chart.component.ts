@@ -68,32 +68,8 @@ export class SalesChartComponent implements OnInit {
   }
 
   createChart() {
-    const data = {
-      labels: this.salesData.map(d => d.month),
-      datasets: [
-        {
-          label: `Monthly Sales in ${this.selectedYear}`,
-          data: this.salesData.map(d => d.sales),
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }
-      ]
-    };
-
-    const config: any = {
-      type: 'bar',
-      data: data,
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    };
-
+    const data = this.getChartData();
+    const config: any = this.getChartConfig(data);
     const chartItem: ChartItem = document.getElementById('salesChart') as ChartItem;
     if (this.chart) {
       this.chart.destroy();
@@ -163,5 +139,35 @@ export class SalesChartComponent implements OnInit {
     await updateDoc(productDocRef, {
       sales: this.totalSales
     });
+  }
+
+  getChartData() {
+    return {
+      labels: this.salesData.map(d => d.month),
+      datasets: [
+        {
+          label: `Monthly Sales in ${this.selectedYear}`,
+          data: this.salesData.map(d => d.sales),
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }
+      ]
+    };
+  }
+
+  getChartConfig(data: any) {
+    return {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
   }
 }

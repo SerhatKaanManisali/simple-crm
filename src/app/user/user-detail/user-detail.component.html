@@ -1,5 +1,5 @@
 <section>
-    <mat-card class="user-detail-header">
+    <mat-card class="user-detail-header" [ngStyle]="{'background-color': user.img}">
         <button class="more-button" mat-icon-button [mat-menu-trigger-for]="userMenu">
             <img src="assets/img/more-options-white.png">
         </button>
