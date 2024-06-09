@@ -31,6 +31,11 @@ mat-toolbar-row {
     z-index: 1;
 }
 
+mat-toolbar-row {
+    display: flex;
+    justify-content: space-between;
+}
+
 mat-nav-list a:hover {
     transition: all 100ms ease-in-out;
     background-color: rgba(0, 0, 0, 0.05);

@@ -120,12 +120,15 @@ export class DialogAddUserComponent {
       hue = Math.floor(Math.random() * 360);
       saturation = Math.floor(Math.random() * 50) + 50;
       lightness = Math.floor(Math.random() * 40) + 40;
-    } while (this.isBrown(hue, saturation, lightness));
+    } while (this.isBrownOrRed(hue, saturation, lightness));
 
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   }
 
-  isBrown(hue: number, saturation: number, lightness: number): boolean {
-    return hue >= 30 && hue <= 45 && saturation >= 20 && saturation <= 50 && lightness >= 30 && lightness <= 60;
+  isBrownOrRed(hue: number, saturation: number, lightness: number): boolean {
+    const isBrown = hue >= 30 && hue <= 45 && saturation >= 20 && saturation <= 50 && lightness >= 30 && lightness <= 60;
+    const isRed = (hue >= 0 && hue <= 30) || (hue >= 330 && hue <= 360);
+    return isBrown || isRed;
   }
+
 }

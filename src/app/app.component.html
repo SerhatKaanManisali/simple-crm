@@ -1,20 +1,22 @@
 <mat-drawer-container class="mat-drawer-container" autosize>
-  <mat-drawer #drawer class="sidenav" mode="over" opened="true">
+  <mat-drawer #drawer class="sidenav" [mode]="isScreenSmall ? 'over' : 'side'" [opened]="!isScreenSmall" position="end"
+    (openedChange)="isDrawerOpened = $event">
     <div class="logo-container"><img src="assets/img/crm-logo.png"></div>
 
     <mat-nav-list>
       <a mat-list-item routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"
-        (click)="drawer.close()">
+        (click)="isScreenSmall ? drawer.close() : ''">
         <mat-icon matListItemIcon>dashboard</mat-icon>
         Dashboard
       </a>
 
-      <a mat-list-item routerLink="/product" routerLinkActive="active-link" (click)="drawer.close()">
+      <a mat-list-item routerLink="/product" routerLinkActive="active-link"
+        (click)="isScreenSmall ? drawer.close() : ''">
         <mat-icon matListItemIcon>devices_other</mat-icon>
         Product
       </a>
 
-      <a mat-list-item routerLink="/user" routerLinkActive="active-link" (click)="drawer.close()">
+      <a mat-list-item routerLink="/user" routerLinkActive="active-link" (click)="isScreenSmall ? drawer.close() : ''">
         <mat-icon matListItemIcon>person</mat-icon>
         User
       </a>
@@ -23,11 +25,14 @@
 
   <div class="sidenav-content">
     <mat-toolbar color="primary">
-      <mat-toolbar-row>
-        <button mat-icon-button (click)="drawer.toggle()">
-          <mat-icon>menu</mat-icon>
+      <mat-toolbar-row [ngStyle]="{width: !isScreenSmall ? (isDrawerOpened ? 'calc(100% - 299px)' : '100%') : ''}">
+        <button mat-icon-button (click)="navigateUp()" matTooltip="Back">
+          <mat-icon>arrow_back</mat-icon>
         </button>
         <span>Simple CRM</span>
+        <button mat-icon-button (click)="drawer.toggle(); onDrawerToggle()" matTooltip="Menu">
+          <mat-icon>menu</mat-icon>
+        </button>
       </mat-toolbar-row>
     </mat-toolbar>
 

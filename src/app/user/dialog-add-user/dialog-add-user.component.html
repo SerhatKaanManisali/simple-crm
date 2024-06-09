@@ -49,9 +49,7 @@
         <mat-label>Birth date</mat-label>
         <input formControlName="birthDate" matInput [matDatepicker]="picker" />
         <mat-hint>MM/DD/YYYY</mat-hint>
-        @if (!isScreenSmall) {
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        }
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
