@@ -1,6 +1,5 @@
 <section>
     <mat-card class="product-detail-header">
-        <div [ngStyle]="{'background-color': product.img}"></div>
         <span>
             <h1>{{product.name}}</h1>
             <h2>{{product.description}}</h2>
@@ -9,11 +8,11 @@
 
     <div class="specs-container">
         @for (spec of specs; track $index) {
-        <mat-card class="spec-card" [ngStyle]="{'background-color': product.img}">
-            <button mat-icon-button (click)="editComponent(spec)">
+        <mat-card class="spec-card">
+            <button mat-icon-button (click)=" editComponent(spec)" matTooltip="Edit" matTooltipPosition="above">
                 <img src="assets/img/edit.png">
             </button>
-            <h3>{{spec.displayLabel}}</h3>
+            <img src="assets/img/{{spec.icon}}" [matTooltip]="spec.tooltip" matTooltipPosition="above">
             <p>
                 {{spec.value}}
                 @if (spec.label === 'price') {

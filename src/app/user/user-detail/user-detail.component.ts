@@ -71,18 +71,27 @@ export class UserDetailComponent implements OnInit {
   }
 
   subscribeToPurchaseHistory() {
-    const purchasesCollection = collection(this.firestore, 'products');
-    const q = query(purchasesCollection, where('userId', '==', this.userId));
+    const purchasesCollection = collection(this.firestore, 'users', this.userId);
+    const q = query(purchasesCollection);
 
     onSnapshot(q, (querySnapshot) => {
       const purchaseHistory: any[] = [];
       querySnapshot.forEach((doc) => {
         purchaseHistory.push(doc.data());
       });
+      console.log(purchaseHistory);
+
       this.user.purchaseHistory = purchaseHistory.sort((a, b) => {
-        return new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
+        const dateA = this.parseDate(a.purchaseDate);
+        const dateB = this.parseDate(b.purchaseDate);
+        return dateB.getTime() - dateA.getTime();
       });
     });
+  }
+
+  parseDate(dateString: string): Date {
+    const [day, month, year] = dateString.split('/').map(part => parseInt(part, 10));
+    return new Date(year, month - 1, day);
   }
 
   openPurchaseDialog() {

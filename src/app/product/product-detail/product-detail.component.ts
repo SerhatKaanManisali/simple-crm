@@ -9,13 +9,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEditComponentComponent } from './dialog-edit-component/dialog-edit-component.component';
 import { SalesChartComponent } from './sales-chart/sales-chart.component';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 type ProductKeys = keyof Omit<Product, 'id' | 'name' | 'description' | 'sales'>;
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIconModule, SalesChartComponent, CommonModule],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, SalesChartComponent, CommonModule, MatTooltipModule],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
@@ -41,7 +42,7 @@ export class ProductDetailComponent implements OnInit {
     sales: 0
   }
 
-  specs: { label: ProductKeys, displayLabel: string, value: string | number }[] = [];
+  specs: { label: ProductKeys, icon: string, value: string | number, tooltip: string }[] = [];
 
 
   ngOnInit(): void {
@@ -54,20 +55,20 @@ export class ProductDetailComponent implements OnInit {
     this.product = productDoc.data() as Product;
 
     this.specs = [
-      { label: 'cpu', displayLabel: 'CPU', value: this.product.cpu },
-      { label: 'gpu', displayLabel: 'GPU', value: this.product.gpu },
-      { label: 'storage', displayLabel: 'Storage', value: this.product.storage },
-      { label: 'ram', displayLabel: 'RAM', value: this.product.ram },
-      { label: 'mainboard', displayLabel: 'Mainboard', value: this.product.mainboard },
-      { label: 'psu', displayLabel: 'PSU', value: this.product.psu },
-      { label: 'case', displayLabel: 'Case', value: this.product.case },
-      { label: 'price', displayLabel: 'Price', value: this.product.price }
+      { label: 'cpu', icon: 'cpu-icon.png', value: this.product.cpu, tooltip: 'CPU' },
+      { label: 'gpu', icon: 'gpu-icon.png', value: this.product.gpu, tooltip: 'GPU' },
+      { label: 'storage', icon: 'storage-icon.png', value: this.product.storage, tooltip: 'Storage' },
+      { label: 'ram', icon: 'ram-icon.png', value: this.product.ram, tooltip: 'RAM' },
+      { label: 'mainboard', icon: 'mainboard-icon.png', value: this.product.mainboard, tooltip: 'Mainboard' },
+      { label: 'psu', icon: 'psu-icon.png', value: this.product.psu, tooltip: 'PSU' },
+      { label: 'case', icon: 'case-icon.png', value: this.product.case, tooltip: 'Case' },
+      { label: 'price', icon: 'price-icon.png', value: this.product.price, tooltip: 'Price' }
     ];
   }
 
-  editComponent(spec: { label: ProductKeys, displayLabel: string, value: string | number }) {
+  editComponent(spec: { label: ProductKeys, icon: string, value: string | number }) {
     const dialogRef = this.dialog.open(DialogEditComponentComponent, {
-      data: { label: spec.label, displayLabel: spec.displayLabel, value: spec.value }
+      data: { label: spec.label, displayLabel: spec.icon, value: spec.value }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -75,7 +76,7 @@ export class ProductDetailComponent implements OnInit {
         (this.product[spec.label] as string | number) = result;
         const productDoc = doc(this.firestore, 'products', this.productId);
         updateDoc(productDoc, { [spec.label]: result });
-        this.specs = this.specs.map(s => s.label === spec.label ? { label: s.label, displayLabel: s.displayLabel, value: result } : s);
+        this.specs = this.specs.map(s => s.label === spec.label ? { label: s.label, icon: s.icon, value: result, tooltip: s.tooltip } : s);
       }
     });
   }

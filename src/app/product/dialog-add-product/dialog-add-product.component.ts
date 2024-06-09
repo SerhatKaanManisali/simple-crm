@@ -59,7 +59,6 @@ export class DialogAddProductComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       if (result) {
         this.removeWhitespace(result);
-        result.img = this.getRandomColor();
         await this.addDoc(result);
       }
     });
@@ -87,23 +86,6 @@ export class DialogAddProductComponent {
         result[key] = result[key].trim();
       }
     });
-  }
-
-  getRandomColor(): string {
-    let hue, saturation, lightness;
-    do {
-      hue = Math.floor(Math.random() * 360);
-      saturation = Math.floor(Math.random() * 50) + 50;
-      lightness = Math.floor(Math.random() * 40) + 40;
-    } while (this.isBrownOrRed(hue, saturation, lightness));
-
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-  }
-
-  isBrownOrRed(hue: number, saturation: number, lightness: number): boolean {
-    const isBrown = hue >= 30 && hue <= 45 && saturation >= 20 && saturation <= 50 && lightness >= 30 && lightness <= 60;
-    const isRed = (hue >= 0 && hue <= 30) || (hue >= 330 && hue <= 360);
-    return isBrown || isRed;
   }
 
 }
