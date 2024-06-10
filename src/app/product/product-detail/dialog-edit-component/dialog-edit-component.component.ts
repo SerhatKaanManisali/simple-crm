@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 export class DialogEditComponentComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogEditComponentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { label: string, displayLabel: string, value: string | number }
+    @Inject(MAT_DIALOG_DATA) public data: { label: string, displayLabel: string, value: string | number, image: string }
   ) { }
 
   onNoClick() {

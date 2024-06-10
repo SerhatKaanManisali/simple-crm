@@ -42,7 +42,7 @@ export class ProductDetailComponent implements OnInit {
     sales: 0
   }
 
-  specs: { label: ProductKeys, icon: string, value: string | number, tooltip: string }[] = [];
+  specs: { label: ProductKeys, displayLabel: string, value: string | number, image: string }[] = [];
 
 
   ngOnInit(): void {
@@ -55,20 +55,21 @@ export class ProductDetailComponent implements OnInit {
     this.product = productDoc.data() as Product;
 
     this.specs = [
-      { label: 'cpu', icon: 'cpu-icon.png', value: this.product.cpu, tooltip: 'CPU' },
-      { label: 'gpu', icon: 'gpu-icon.png', value: this.product.gpu, tooltip: 'GPU' },
-      { label: 'storage', icon: 'storage-icon.png', value: this.product.storage, tooltip: 'Storage' },
-      { label: 'ram', icon: 'ram-icon.png', value: this.product.ram, tooltip: 'RAM' },
-      { label: 'mainboard', icon: 'mainboard-icon.png', value: this.product.mainboard, tooltip: 'Mainboard' },
-      { label: 'psu', icon: 'psu-icon.png', value: this.product.psu, tooltip: 'PSU' },
-      { label: 'case', icon: 'case-icon.png', value: this.product.case, tooltip: 'Case' },
-      { label: 'price', icon: 'price-icon.png', value: this.product.price, tooltip: 'Price' }
+      { label: 'cpu', displayLabel: 'CPU', value: this.product.cpu, image: 'cpu-icon.png' },
+      { label: 'gpu', displayLabel: 'GPU', value: this.product.gpu, image: 'gpu-icon.png' },
+      { label: 'storage', displayLabel: 'Storage', value: this.product.storage, image: 'storage-icon.png' },
+      { label: 'ram', displayLabel: 'RAM', value: this.product.ram, image: 'ram-icon.png' },
+      { label: 'mainboard', displayLabel: 'Mainboard', value: this.product.mainboard, image: 'mainboard-icon.png' },
+      { label: 'psu', displayLabel: 'PSU', value: this.product.psu, image: 'psu-icon.png' },
+      { label: 'case', displayLabel: 'Case', value: this.product.case, image: 'case-icon.png' },
+      { label: 'price', displayLabel: 'Price', value: this.product.price, image: 'price-icon.png' }
     ];
+
   }
 
-  editComponent(spec: { label: ProductKeys, icon: string, value: string | number }) {
+  editComponent(spec: { label: ProductKeys, displayLabel: string, value: string | number, image: string }) {
     const dialogRef = this.dialog.open(DialogEditComponentComponent, {
-      data: { label: spec.label, displayLabel: spec.icon, value: spec.value }
+      data: { label: spec.label, displayLabel: spec.displayLabel, value: spec.value, image: spec.image }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -76,7 +77,7 @@ export class ProductDetailComponent implements OnInit {
         (this.product[spec.label] as string | number) = result;
         const productDoc = doc(this.firestore, 'products', this.productId);
         updateDoc(productDoc, { [spec.label]: result });
-        this.specs = this.specs.map(s => s.label === spec.label ? { label: s.label, icon: s.icon, value: result, tooltip: s.tooltip } : s);
+        this.specs = this.specs.map(s => s.label === spec.label ? { label: s.label, displayLabel: s.displayLabel, value: result, image: s.image } : s);
       }
     });
   }
