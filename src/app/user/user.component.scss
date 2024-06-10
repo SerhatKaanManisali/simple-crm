@@ -1,12 +1,13 @@
+mat-form-field {
+    margin-top: 50px;
+    width: 100%;
+}
+
 mat-spinner {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-table {
-    margin-top: 50px;
 }
 
 .add-user-button {
@@ -15,10 +16,16 @@ table {
     bottom: 16px;
 }
 
-.mat-mdc-row:hover {
-    transition: all 100ms ease-in-out;
-    background-color: rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+.mat-mdc-row {
+    &:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.025);
+    }
+
+    &:hover {
+        transition: all 100ms ease-in-out;
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
 }
 
 @media (max-width: 427px) {

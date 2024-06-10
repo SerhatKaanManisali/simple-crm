@@ -9,6 +9,9 @@ import { Firestore, collection, collectionData, deleteDoc, doc } from '@angular/
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-user',
@@ -21,7 +24,10 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     MatTableModule,
     RouterModule,
     MatMenuModule,
-    MatSortModule
+    MatSortModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -44,6 +50,7 @@ export class UserComponent implements OnDestroy, AfterViewInit, OnInit {
   isScreenWide = window.innerWidth > 425;
 
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor() {
     this.users$ = collectionData(collection(this.firestore, 'users'));
@@ -55,6 +62,7 @@ export class UserComponent implements OnDestroy, AfterViewInit, OnInit {
         });
         this.dataSource.data = users;
         this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       });
     }
   }
@@ -73,6 +81,15 @@ export class UserComponent implements OnDestroy, AfterViewInit, OnInit {
     }
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   async deleteUser(userId: string) {
     await deleteDoc(doc(this.firestore, 'users', userId));
   }
@@ -83,6 +100,7 @@ export class UserComponent implements OnDestroy, AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy() {

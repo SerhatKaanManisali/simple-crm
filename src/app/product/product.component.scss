@@ -1,5 +1,6 @@
-table {
+mat-form-field {
     margin-top: 50px;
+    width: 100%;
 }
 
 .add-product-button {
@@ -8,8 +9,14 @@ table {
     bottom: 16px;
 }
 
-.mat-mdc-row:hover {
-    transition: all 100ms ease-in-out;
-    background-color: rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+.mat-mdc-row {
+    &:hover {
+        transition: all 100ms ease-in-out;
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    &:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.025);
+    }
 }

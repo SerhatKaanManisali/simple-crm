@@ -8,18 +8,26 @@ import { Firestore, collection, collectionData, deleteDoc, doc } from '@angular/
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-product',
   standalone: true,
   imports: [
+    CommonModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
     MatTableModule,
     MatMenuModule,
     MatSortModule,
-    RouterModule
+    MatPaginatorModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
@@ -41,6 +49,7 @@ export class ProductComponent implements OnDestroy, AfterViewInit {
   products: any;
 
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -49,6 +58,8 @@ export class ProductComponent implements OnDestroy, AfterViewInit {
     if (this.products$) {
       this.products = this.products$.subscribe((products: any) => {
         this.dataSource.data = products;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       });
     }
   }
@@ -63,12 +74,22 @@ export class ProductComponent implements OnDestroy, AfterViewInit {
     });
 
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.setDefaultSort();
   }
 
   ngOnDestroy() {
     if (this.products) {
       this.products.unsubscribe();
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 
