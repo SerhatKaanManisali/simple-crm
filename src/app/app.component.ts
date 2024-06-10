@@ -1,13 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet, Router } from '@angular/router';
+import { RouterModule, RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +38,12 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.breakpointObserver.observe(['(max-width: 800px)']).subscribe((state: BreakpointState) => {
       this.isScreenSmall = state.matches;
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.isOnDashboard = event.urlAfterRedirects === '/';
     });
   }
 

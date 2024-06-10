@@ -90,6 +90,7 @@ export class ChartYearlySalesComponent implements OnInit {
     this.renderChart(Object.keys(salesData), Object.values(salesData));
   }
 
+
   renderChart(labels: string[], data: number[]): void {
     const canvas = document.getElementById('yearly-sales-chart') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');

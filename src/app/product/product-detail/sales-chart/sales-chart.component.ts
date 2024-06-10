@@ -1,4 +1,4 @@
-import { Component, Injectable, Input, OnInit, inject } from '@angular/core';
+import { AfterViewInit, Component, Injectable, Input, OnInit, inject } from '@angular/core';
 import { Firestore, collection, getDocs, query, where, doc, updateDoc, setDoc } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +19,7 @@ Chart.register(...registerables);
   templateUrl: './sales-chart.component.html',
   styleUrls: ['./sales-chart.component.scss']
 })
-export class SalesChartComponent implements OnInit {
+export class SalesChartComponent implements OnInit, AfterViewInit {
   firestore: Firestore = inject(Firestore);
   chart: Chart | undefined;
   years: number[] = [2022, 2023, 2024];
@@ -34,6 +34,13 @@ export class SalesChartComponent implements OnInit {
   ngOnInit() {
     this.getSalesData();
   }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.createChart();
+    });
+  }
+
 
   initializeSalesData(): { month: string, sales: number }[] {
     return [

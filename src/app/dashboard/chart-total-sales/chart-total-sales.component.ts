@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, collection, onSnapshot, getDocs, updateDoc } from '@angular/fire/firestore';
 import { MatCardModule } from '@angular/material/card';
 import { Chart } from 'chart.js/auto';
 
@@ -20,26 +20,27 @@ export class ChartTotalSalesComponent implements OnInit {
 
   loadSalesData() {
     const productsCollection = collection(this.firestore, 'products');
+    onSnapshot(productsCollection, async (snapshot) => {
+      const salesData: { [key: string]: number } = {};
 
-    onSnapshot(productsCollection, (snapshot) => {
-      const salesData: { [key: string]: number } = {
-        'High-End Gaming-PC': 0,
-        'Mid-Range Gaming-PC': 0,
-        'Budget Gaming-PC': 0,
-      };
+      for (const docSnapshot of snapshot.docs) {
+        const productData = docSnapshot.data();
+        const productName = productData['name'];
+        const productDocRef = docSnapshot.ref;
+        const salesSubCollection = collection(productDocRef, 'sales');
+        const salesSnapshot = await getDocs(salesSubCollection);
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const sales = data['sales'] || 0;
+        let totalSales = 0;
+        salesSnapshot.forEach(salesDoc => {
+          const productSalesData = salesDoc.data()['salesData'] || [];
+          totalSales += productSalesData.reduce((sum: number, item: any) => sum + item.sales, 0);
+        });
 
-        if (doc.id.includes('Cjaq6S3mkcCxsSpL4DhV')) {
-          salesData['High-End Gaming-PC'] += sales;
-        } else if (doc.id.includes('m1lnUb1y00dmkludaIBl')) {
-          salesData['Mid-Range Gaming-PC'] += sales;
-        } else if (doc.id.includes('aAbXmau9g9yOXNigIcJY')) {
-          salesData['Budget Gaming-PC'] += sales;
-        }
-      });
+        salesData[productName] = totalSales;
+
+        await updateDoc(productDocRef, { sales: totalSales });
+      }
+
       this.renderChart(Object.keys(salesData), Object.values(salesData));
     });
   }

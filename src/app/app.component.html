@@ -26,9 +26,11 @@
   <div class="sidenav-content">
     <mat-toolbar color="primary">
       <mat-toolbar-row [ngStyle]="{width: !isScreenSmall ? (isDrawerOpened ? 'calc(100% - 303px)' : '100%') : ''}">
-        <button mat-icon-button (click)="navigateUp()" matTooltip="Back">
+
+        <button mat-icon-button (click)="navigateUp()" matTooltip="Back" [disabled]="isOnDashboard">
           <mat-icon>arrow_back</mat-icon>
         </button>
+
         <span>Simple CRM</span>
         <button mat-icon-button (click)="drawer.toggle(); onDrawerToggle()" matTooltip="Menu">
           <mat-icon>menu</mat-icon>
