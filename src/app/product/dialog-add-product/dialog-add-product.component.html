@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Add product</h1>
-<form [formGroup]="productForm">
-    <mat-dialog-content>
+<mat-dialog-content>
+    <form [formGroup]="productForm">
         <mat-form-field appearance="fill">
             <mat-label>Name</mat-label>
             <input matInput placeholder="Name" formControlName="name">
@@ -59,12 +59,12 @@
             <mat-error>Price is required</mat-error>
             }
         </mat-form-field>
-    </mat-dialog-content>
+    </form>
+</mat-dialog-content>
 
-    <mat-dialog-actions align="end">
-        <button mat-stroked-button mat-dialog-close>Cancel</button>
-        <button mat-flat-button color="primary" [disabled]="productForm.invalid" [mat-dialog-close]="productForm.value">
-            Save
-        </button>
-    </mat-dialog-actions>
-</form>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" [disabled]="productForm.invalid" [mat-dialog-close]="productForm.value">
+        Save
+    </button>
+</mat-dialog-actions>

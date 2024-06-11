@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   title = 'simple-crm';
   isScreenSmall = false;
   isDrawerOpened = false;
-  isOnDashboard = true;
+  isOnLeadboard = true;
 
   ngOnInit(): void {
     this.breakpointObserver.observe(['(max-width: 800px)']).subscribe((state: BreakpointState) => {
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.isOnDashboard = event.urlAfterRedirects === '/';
+      this.isOnLeadboard = event.urlAfterRedirects === '/';
     });
   }
 

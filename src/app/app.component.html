@@ -7,7 +7,13 @@
       <a mat-list-item routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"
         (click)="isScreenSmall ? drawer.close() : ''">
         <mat-icon matListItemIcon>dashboard</mat-icon>
-        Dashboard
+        Leadboard
+      </a>
+
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link"
+        (click)="isScreenSmall ? drawer.close() : ''">
+        <mat-icon matListItemIcon>pie_chart</mat-icon>
+        Insights
       </a>
 
       <a mat-list-item routerLink="/product" routerLinkActive="active-link"
@@ -27,7 +33,7 @@
     <mat-toolbar color="primary">
       <mat-toolbar-row [ngStyle]="{width: !isScreenSmall ? (isDrawerOpened ? 'calc(100% - 303px)' : '100%') : ''}">
 
-        <button mat-icon-button (click)="navigateUp()" matTooltip="Back" [disabled]="isOnDashboard">
+        <button mat-icon-button (click)="navigateUp()" matTooltip="Back" [disabled]="isOnLeadboard">
           <mat-icon>arrow_back</mat-icon>
         </button>
 

@@ -1,6 +1,7 @@
 <h1 mat-dialog-title>Add user</h1>
-<form [formGroup]="userForm" class="user-form">
-  <mat-dialog-content>
+
+<mat-dialog-content>
+  <form [formGroup]="userForm">
     <div class="two-fields">
       <mat-form-field appearance="fill">
         <mat-label>First name</mat-label>
@@ -79,11 +80,11 @@
         }
       </mat-form-field>
     </div>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-stroked-button mat-dialog-close>Cancel</button>
-    <button mat-flat-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="userForm.value">
-      Save
-    </button>
-  </mat-dialog-actions>
-</form>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="userForm.value">
+    Save
+  </button>
+</mat-dialog-actions>

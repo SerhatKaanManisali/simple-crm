@@ -2,12 +2,7 @@
 
 mat-dialog-content {
     @include flexbox($ai: flex-start, $fd: column, $g: 16px);
-    padding: 200px 16px 16px !important;
     max-width: 600px;
-
-    @media (max-height: 667px) {
-        padding-top: 380px !important;
-    }
 }
 
 mat-form-field {
@@ -16,11 +11,22 @@ mat-form-field {
 
 mat-dialog-actions {
     padding-bottom: 16px;
-    padding-right: 32px;
+    padding-right: 24px;
+}
+
+textarea {
+    resize: none !important;
 }
 
 .two-fields {
     @include flexbox($g: 16px);
     margin-top: 4px;
     width: 100%;
+}
+
+@media (max-width: 600px) {
+
+    mat-dialog-content {
+        min-width: unset;
+    }
 }

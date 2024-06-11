@@ -3,6 +3,7 @@
 mat-dialog-content {
     @include flexbox($ai: flex-start, $fd: column, $g: 16px);
     padding: 0 16px;
+    max-width: 600px;
 
     @media (max-height: 667px) {
         padding-top: 50px !important;
@@ -14,7 +15,7 @@ mat-form-field {
 }
 
 mat-dialog-actions {
-    padding-bottom: 24px;
+    padding-bottom: 16px;
     padding-right: 24px;
 }
 
