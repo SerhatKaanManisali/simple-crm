@@ -29,10 +29,11 @@ export class DialogAddLeadComponent implements OnInit {
   lead: Lead = {
     title: '',
     description: '',
+    id: '',
     person: '',
     company: '',
     value: 0,
-    stage: ''
+    stage: this.stages[0]
   }
 
   constructor() {

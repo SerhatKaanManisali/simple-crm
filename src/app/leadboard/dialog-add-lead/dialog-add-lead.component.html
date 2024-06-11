@@ -3,7 +3,7 @@
     <form [formGroup]="leadForm">
         <mat-form-field>
             <mat-label>Title</mat-label>
-            <input matInput placeholder="Title" formControlName="title">
+            <input matInput placeholder="Title" formControlName="title" [(ngModel)]="lead.title">
             @if (leadForm.get('title')?.hasError('required')) {
             <mat-error>Title is required</mat-error>
             }
@@ -11,12 +11,14 @@
 
         <mat-form-field>
             <mat-label>Description</mat-label>
-            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+            <textarea matInput placeholder="Description" formControlName="description"
+                [(ngModel)]="lead.description"></textarea>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Contact person</mat-label>
-            <input matInput placeholder="Contact person" formControlName="person" [matAutocomplete]="auto">
+            <input matInput placeholder="Contact person" formControlName="person" [matAutocomplete]="auto"
+                [(ngModel)]="lead.person">
             <mat-autocomplete #auto="matAutocomplete">
                 @for (user of filteredUsers | async; track $index) {
                 <mat-option [value]="user">{{user}}</mat-option>
@@ -26,17 +28,18 @@
 
         <mat-form-field>
             <mat-label>Company</mat-label>
-            <input matInput placeholder="Company" formControlName="company">
+            <input matInput placeholder="Company" formControlName="company" [(ngModel)]="lead.company">
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Value in €</mat-label>
-            <input matInput placeholder="Value in €" type="number" min="0" formControlName="value">
+            <input matInput placeholder="Value in €" type="number" min="0" formControlName="value"
+                [(ngModel)]="lead.value">
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Stage</mat-label>
-            <mat-select [value]="stages[0]" formControlName="stage">
+            <mat-select [value]="stages[0]" formControlName="stage" [(ngModel)]="lead.stage">
                 @for (stage of stages; track stage) {
                 <mat-option [value]="stage">{{stage}}</mat-option>
                 }
