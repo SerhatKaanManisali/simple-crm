@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Firestore, collection, onSnapshot, updateDoc, doc, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, onSnapshot, updateDoc, doc, addDoc, deleteDoc } from '@angular/fire/firestore';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,12 +7,15 @@ import { DialogAddLeadComponent } from './dialog-add-lead/dialog-add-lead.compon
 import { Lead } from '../interfaces/lead.interface';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
-import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { LeadDetailComponent } from './lead-detail/lead-detail.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-leadboard',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatDialogModule, MatTooltipModule, MatCardModule, DragDropModule],
+  imports: [MatIconModule, MatButtonModule, MatDialogModule, MatTooltipModule, MatCardModule, DragDropModule, LeadDetailComponent, MatMenuModule, DecimalPipe],
   templateUrl: './leadboard.component.html',
   styleUrls: ['./leadboard.component.scss']
 })
@@ -47,7 +50,7 @@ export class LeadboardComponent implements OnInit {
   }
 
   async updateLeadStage(lead: Lead, newStage: string) {
-    const leadDocRef = doc(this.firestore, `leads/${lead.id}`);
+    const leadDocRef = doc(this.firestore, 'leads', lead.id);
     await updateDoc(leadDocRef, { stage: newStage });
   }
 
@@ -79,11 +82,40 @@ export class LeadboardComponent implements OnInit {
     this.leadsByStage[newStage].totalValue += lead.value;
   }
 
-  openDialog() {
+  async updateStatus(lead: Lead, status: string) {
+    await updateDoc(doc(this.firestore, 'leads', lead.id), {
+      status: status
+    });
+  }
+
+  async deleteLead(lead: Lead) {
+    await deleteDoc(doc(this.firestore, 'leads', lead.id));
+  }
+
+  openDetailDialog(lead: Lead) {
+    const leadCopy = { ...lead };
+    const dialogRef = this.dialog.open(LeadDetailComponent, {
+      data: leadCopy
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      if (result) {
+        await updateDoc(doc(this.firestore, 'leads', lead.id), result);
+        this.getLeads();
+      }
+    });
+  }
+
+  openAddDialog() {
     const dialogRef = this.dialog.open(DialogAddLeadComponent);
     dialogRef.afterClosed().subscribe(async (result: Lead) => {
       if (result) {
-        await addDoc(collection(this.firestore, 'leads'), result);
+        await addDoc(collection(this.firestore, 'leads'), result)
+          .then(async docRef => {
+            await updateDoc(doc(this.firestore, 'leads', docRef.id), {
+              id: docRef.id
+            });
+          });
         this.getLeads();
       }
     });

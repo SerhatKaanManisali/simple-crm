@@ -6,4 +6,5 @@ export interface Lead {
     company: string;
     value: number;
     stage: string;
+    status: string;
 }

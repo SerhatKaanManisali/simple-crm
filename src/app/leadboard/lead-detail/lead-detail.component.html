@@ -1,0 +1,41 @@
+<mat-dialog-content>
+    <form [formGroup]="leadForm">
+        <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="5" formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Contact person</mat-label>
+            <input matInput formControlName="person">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Company</mat-label>
+            <input matInput formControlName="company">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Stage</mat-label>
+            <mat-select formControlName="stage">
+                @for (stage of stages; track stage) {
+                <mat-option [value]="stage">{{stage}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Value in €</mat-label>
+            <input matInput type="number" min="0" formControlName="value">
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Close</button>
+    <button mat-flat-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

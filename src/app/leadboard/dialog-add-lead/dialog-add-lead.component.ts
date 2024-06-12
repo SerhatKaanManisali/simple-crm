@@ -33,7 +33,8 @@ export class DialogAddLeadComponent implements OnInit {
     person: '',
     company: '',
     value: 0,
-    stage: this.stages[0]
+    stage: this.stages[0],
+    status: 'open',
   }
 
   constructor() {

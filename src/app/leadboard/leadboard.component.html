@@ -7,33 +7,38 @@
                 <mat-card-header>
                     <mat-card-title>{{stage}}</mat-card-title>
                     <mat-card-subtitle>
-                        <span>{{leadsByStage[stage]?.totalValue || 0}}€ &bull; {{leadsByStage[stage]?.leads?.length ||
-                            0}}
-                            leads</span>
+                        <span>{{leadsByStage[stage]?.totalValue | number:'1.0-0'}}€ &bull;
+                            {{leadsByStage[stage]?.leads?.length || 0}} leads</span>
                     </mat-card-subtitle>
+                    <button mat-icon-button class="edit-stage-button">
+                        <mat-icon>edit</mat-icon>
+                    </button>
                 </mat-card-header>
                 <mat-card-content>
                     @for (lead of leadsByStage[stage]?.leads || []; track $index) {
-                    <mat-card cdkDrag>
+                    <mat-card cdkDrag class="lead" (click)="openDetailDialog(lead)">
                         <mat-card-header>
                             <mat-card-title>{{lead.title}}</mat-card-title>
                             <mat-card-subtitle>{{lead.person}}, {{lead.company}}</mat-card-subtitle>
+                            <button mat-icon-button [mat-menu-trigger-for]="leadMenu"
+                                (click)="$event.stopPropagation()">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #leadMenu>
+                                <button mat-menu-item (click)="updateStatus(lead, 'succeeded')">Succeeded</button>
+                                <button mat-menu-item (click)="updateStatus(lead, 'failed')">Failed</button>
+                                <button mat-menu-item (click)="deleteLead(lead)">Delete</button>
+                            </mat-menu>
                         </mat-card-header>
-                        <mat-card-content>{{lead.value}}€</mat-card-content>
+                        <mat-card-content>{{lead.value | number:'1.0-0'}}€</mat-card-content>
                     </mat-card>
                     }
                 </mat-card-content>
             </mat-card>
             }
         </div>
-
-        <div class="lead-interaction-box">
-            <div cdkDropList></div>
-            <div cdkDropList></div>
-            <div cdkDropList></div>
-        </div>
     </div>
-    <button class="add-lead-button" (click)="openDialog()" mat-fab color="primary" matTooltip="Add lead">
+    <button class="add-lead-button" (click)="openAddDialog()" mat-fab color="primary" matTooltip="Add lead">
         <mat-icon>add</mat-icon>
     </button>
 </section>
