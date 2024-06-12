@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Edit Stage</h1>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Stage name</mat-label>
+        <input matInput [(ngModel)]="data.stageName">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="data.stageName">Save</button>
+</mat-dialog-actions>

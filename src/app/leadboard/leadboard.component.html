@@ -10,7 +10,8 @@
                         <span>{{leadsByStage[stage]?.totalValue | number:'1.0-0'}}€ &bull;
                             {{leadsByStage[stage]?.leads?.length || 0}} leads</span>
                     </mat-card-subtitle>
-                    <button mat-icon-button class="edit-stage-button">
+                    <button mat-icon-button class="edit-stage-button" (click)="editStage(stage)" matTooltip="Edit stage"
+                        matTooltipPosition="above">
                         <mat-icon>edit</mat-icon>
                     </button>
                 </mat-card-header>
@@ -20,8 +21,8 @@
                         <mat-card-header>
                             <mat-card-title>{{lead.title}}</mat-card-title>
                             <mat-card-subtitle>{{lead.person}}, {{lead.company}}</mat-card-subtitle>
-                            <button mat-icon-button [mat-menu-trigger-for]="leadMenu"
-                                (click)="$event.stopPropagation()">
+                            <button mat-icon-button [mat-menu-trigger-for]="leadMenu" (click)="$event.stopPropagation()"
+                                matTooltip="More" matTooltipPosition="above">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #leadMenu>

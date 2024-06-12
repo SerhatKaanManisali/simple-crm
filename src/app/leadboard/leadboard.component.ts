@@ -11,6 +11,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LeadDetailComponent } from './lead-detail/lead-detail.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { DecimalPipe } from '@angular/common';
+import { DialogEditStageComponent } from './dialog-edit-stage/dialog-edit-stage.component';
 
 @Component({
   selector: 'app-leadboard',
@@ -33,7 +34,7 @@ export class LeadboardComponent implements OnInit {
   getLeads() {
     const leadsCollection = collection(this.firestore, 'leads');
     onSnapshot(leadsCollection, (snapshot) => {
-      this.leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Lead));
+      this.leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Lead)).filter(lead => lead.status === 'open');
       this.groupLeadsByStage();
     });
   }
@@ -90,6 +91,23 @@ export class LeadboardComponent implements OnInit {
 
   async deleteLead(lead: Lead) {
     await deleteDoc(doc(this.firestore, 'leads', lead.id));
+  }
+
+  editStage(stage: string) {
+    const dialogRef = this.dialog.open(DialogEditStageComponent, {
+      data: { stageName: stage }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.stages.indexOf(stage);
+        if (index !== -1) {
+          this.stages[index] = result;
+          this.leadsByStage[result] = this.leadsByStage[stage];
+          delete this.leadsByStage[stage];
+        }
+      }
+    });
   }
 
   openDetailDialog(lead: Lead) {
