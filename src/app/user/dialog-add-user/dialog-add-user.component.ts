@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { User } from '../../interfaces/user.interface';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collection, doc, addDoc, updateDoc } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
@@ -60,7 +60,7 @@ export class DialogAddUserComponent {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email, Validators.pattern(/.+@.+\..+/)]],
       phone: [''],
-      birthDate: [''],
+      birthDate: ['', [this.futureDateValidator]],
       street: ['', [Validators.required]],
       zipCode: ['', [Validators.required, Validators.min(0)]],
       city: ['', Validators.required]
@@ -131,4 +131,17 @@ export class DialogAddUserComponent {
     return isBrown || isRed;
   }
 
+  dateFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    return d ? d <= today : false;
+  }
+
+  futureDateValidator(control: FormControl) {
+    const date = new Date(control.value);
+    const today = new Date();
+    if (date > today) {
+      return { 'futureDate': true };
+    }
+    return null;
+  }
 }

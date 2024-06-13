@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -40,7 +40,7 @@ export class DialogAddPurchaseComponent implements OnInit {
   constructor() {
     this.purchaseForm = this.formBuilder.group({
       product: ['', [Validators.required]],
-      purchaseDate: ['', [Validators.required]],
+      purchaseDate: ['', [this.futureDateValidator]],
     });
   }
 
@@ -55,5 +55,19 @@ export class DialogAddPurchaseComponent implements OnInit {
         .map(doc => doc.data())
         .sort((a, b) => a['name'].localeCompare(b['name']));
     });
+  }
+
+  dateFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    return d ? d <= today : false;
+  }
+
+  futureDateValidator(control: FormControl) {
+    const date = new Date(control.value);
+    const today = new Date();
+    if (date > today) {
+      return { 'futureDate': true };
+    }
+    return null;
   }
 }

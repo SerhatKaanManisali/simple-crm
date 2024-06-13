@@ -13,8 +13,8 @@
         </mat-form-field>
         <mat-form-field>
             <mat-label>Purchase date</mat-label>
-            <input formControlName="purchaseDate" matInput [(ngModel)]="purchase.purchaseDate"
-                [matDatepicker]="picker" />
+            <input formControlName="purchaseDate" matInput [(ngModel)]="purchase.purchaseDate" [matDatepicker]="picker"
+                [matDatepickerFilter]="dateFilter" />
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
