@@ -10,6 +10,12 @@
         Leadboard
       </a>
 
+      <a mat-list-item routerLink="/completed-leads" routerLinkActive="active-link"
+        (click)="isScreenSmall ? drawer.close() : ''">
+        <mat-icon matListItemIcon>handshake</mat-icon>
+        Completed leads
+      </a>
+
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link"
         (click)="isScreenSmall ? drawer.close() : ''">
         <mat-icon matListItemIcon>pie_chart</mat-icon>

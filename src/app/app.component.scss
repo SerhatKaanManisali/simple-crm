@@ -43,7 +43,7 @@ mat-nav-list a:hover {
 
 .router-container {
     padding: 16px 30px;
-    overflow: hidden;
+    overflow-y: auto;
     min-height: calc(100vh - 56px);
 
     @media (max-width: 800px) {

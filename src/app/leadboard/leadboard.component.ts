@@ -12,11 +12,27 @@ import { LeadDetailComponent } from './lead-detail/lead-detail.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { DecimalPipe } from '@angular/common';
 import { DialogEditStageComponent } from './dialog-edit-stage/dialog-edit-stage.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-leadboard',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatDialogModule, MatTooltipModule, MatCardModule, DragDropModule, LeadDetailComponent, MatMenuModule, DecimalPipe],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatCardModule,
+    DragDropModule,
+    LeadDetailComponent,
+    MatMenuModule,
+    DecimalPipe,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule // Importieren Sie das FormsModule
+  ],
   templateUrl: './leadboard.component.html',
   styleUrls: ['./leadboard.component.scss']
 })
@@ -26,6 +42,7 @@ export class LeadboardComponent implements OnInit {
   stages: string[] = ['Qualified', 'Contact made', 'Proposal made', 'Negotiations started'];
   leads: Lead[] = [];
   leadsByStage: { [key: string]: { leads: Lead[], totalValue: number } } = {};
+  searchTerm: string = ''; // Suchbegriff hinzufügen
 
   ngOnInit() {
     this.getLeads();
@@ -41,13 +58,24 @@ export class LeadboardComponent implements OnInit {
 
   groupLeadsByStage() {
     this.leadsByStage = {};
-    for (let lead of this.leads) {
+    const filteredLeads = this.filterLeads(this.leads, this.searchTerm);
+    for (let lead of filteredLeads) {
       if (!this.leadsByStage[lead.stage]) {
         this.leadsByStage[lead.stage] = { leads: [], totalValue: 0 };
       }
       this.leadsByStage[lead.stage].leads.push(lead);
       this.leadsByStage[lead.stage].totalValue += lead.value;
     }
+  }
+
+  filterLeads(leads: Lead[], searchTerm: string): Lead[] {
+    if (!searchTerm) return leads;
+    const lowerCaseTerm = searchTerm.toLowerCase();
+    return leads.filter(lead =>
+      lead.title.toLowerCase().includes(lowerCaseTerm) ||
+      lead.person.toLowerCase().includes(lowerCaseTerm) ||
+      lead.company.toLowerCase().includes(lowerCaseTerm)
+    );
   }
 
   async updateLeadStage(lead: Lead, newStage: string) {

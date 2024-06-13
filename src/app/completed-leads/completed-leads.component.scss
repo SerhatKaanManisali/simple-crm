@@ -1,11 +1,5 @@
-header {
-    display: flex;
+mat-form-field {
     margin-top: 50px;
-    gap: 25px;
-
-    >button {
-        height: 56px;
-    }
 }
 
 .mat-mdc-row {
@@ -16,6 +10,11 @@ header {
     &:hover {
         transition: all 100ms ease-in-out;
         background-color: rgba(0, 0, 0, 0.05);
-        cursor: pointer;
+    }
+}
+
+@media (max-width: 415px) {
+    .mat-column-value {
+        display: none;
     }
 }

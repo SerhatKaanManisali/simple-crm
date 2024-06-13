@@ -1,9 +1,15 @@
-<div class="filter-container">
+<header>
     <mat-form-field>
         <mat-label>Filter</mat-label>
         <input matInput (input)="applyFilter($event)" />
     </mat-form-field>
-</div>
+
+    <button (click)="dialogAddProduct.openDialog()" class="add-product-button" mat-flat-button color="primary"
+        matTooltip="Add product" matTooltipPosition="above">
+        <mat-icon>add</mat-icon>
+        Product
+    </button>
+</header>
 
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
@@ -41,8 +47,3 @@
 
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
-
-<button (click)="dialogAddProduct.openDialog()" class="add-product-button" mat-fab color="primary"
-    matTooltip="Add product">
-    <mat-icon>add</mat-icon>
-</button>

@@ -1,12 +1,28 @@
-section {
-    margin-top: 60px;
+header {
+    display: flex;
+    gap: 25px;
+    margin-top: 50px;
+
+    >button {
+        height: 56px;
+        z-index: 0;
+    }
 }
 
 .lead-board {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     width: 100%;
-    height: 90vh;
+    height: 83vh;
     gap: 10px;
+
+    @media (max-width: 1125px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 475px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 .stage {
@@ -23,12 +39,10 @@ section {
         flex-direction: column;
         gap: 10px;
     }
-}
 
-.edit-stage-button {
-    position: absolute;
-    top: 0;
-    right: 0;
+    @media (max-width: 475px) {
+        min-height: 340px;
+    }
 }
 
 .lead {
@@ -41,8 +55,19 @@ section {
     }
 }
 
-.add-lead-button {
-    position: absolute;
-    bottom: 16px;
-    right: 30px;
+.cdk-drop-list-dragging {
+    background-color: rgba(0, 0, 0, 0.05);
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-receiving {
+    border: 3px dashed gray;
+}
+
+.cdk-drag-animating {
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

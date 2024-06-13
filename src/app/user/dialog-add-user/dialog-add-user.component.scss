@@ -4,10 +4,11 @@ mat-dialog-content {
     @include flexbox($ai: flex-start, $fd: column, $g: 16px);
     padding: 0 16px;
     max-width: 600px;
+    overflow-x: hidden;
 
-    @media (max-height: 667px) {
-        padding-top: 50px !important;
-    }
+    // @media (max-height: 667px) {
+    //     padding-top: 50px !important;
+    // }
 }
 
 mat-form-field {
@@ -23,4 +24,50 @@ mat-dialog-actions {
     @include flexbox($g: 16px);
     margin-top: 4px;
     width: 100%;
+}
+
+@media (max-width: 655px) {
+    .two-fields {
+        @include flexbox($fd: column);
+    }
+
+    form {
+        padding-top: 50px;
+    }
+}
+
+@media (max-height: 920px) {
+    mat-dialog-content {
+        padding-top: 50px !important;
+    }
+}
+
+@media (max-height: 860px) {
+    mat-dialog-content {
+        padding-top: 100px !important;
+    }
+}
+
+@media (max-height: 770px) {
+    mat-dialog-content {
+        padding-top: 150px !important;
+    }
+}
+
+@media (max-height: 700px) {
+    mat-dialog-content {
+        padding-top: 200px !important;
+    }
+}
+
+@media (max-height: 625px) {
+    mat-dialog-content {
+        padding-top: 250px !important;
+    }
+}
+
+@media (max-height: 535px) {
+    mat-dialog-content {
+        padding-top: 300px !important;
+    }
 }
