@@ -44,7 +44,7 @@ export class DialogAddUserComponent {
     phone: 123456789,
     birthDate: 0,
     street: '',
-    zipCode: 12345,
+    zipCode: 0,
     city: '',
     fullName: '',
     purchaseHistory: [],
@@ -61,8 +61,8 @@ export class DialogAddUserComponent {
       email: ['', [Validators.required, Validators.email, Validators.pattern(/.+@.+\..+/)]],
       phone: [''],
       birthDate: [''],
-      street: ['', Validators.required],
-      zipCode: ['', Validators.required],
+      street: ['', [Validators.required]],
+      zipCode: ['', [Validators.required, Validators.min(0)]],
       city: ['', Validators.required]
     });
   }

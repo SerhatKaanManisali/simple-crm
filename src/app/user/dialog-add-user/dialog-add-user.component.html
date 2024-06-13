@@ -66,7 +66,7 @@
     <div class="two-fields">
       <mat-form-field appearance="fill">
         <mat-label>Zip code</mat-label>
-        <input formControlName="zipCode" matInput placeholder="Zip code" />
+        <input formControlName="zipCode" matInput placeholder="Zip code" type="number" min="0" />
         @if (userForm.get('zipCode')?.hasError('required')) {
         <mat-error>Zip code is required</mat-error>
         }
