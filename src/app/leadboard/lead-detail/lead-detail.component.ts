@@ -30,7 +30,7 @@ export class LeadDetailComponent {
       person: [data.person],
       company: [data.company],
       stage: [data.stage],
-      value: [data.value]
+      value: [data.value, [Validators.min(0)]]
     });
   }
 

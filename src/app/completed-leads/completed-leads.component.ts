@@ -9,6 +9,8 @@ import { Firestore, collection, doc, onSnapshot, updateDoc } from '@angular/fire
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { Lead } from '../interfaces/lead.interface';
+import { LeadDetailComponent } from '../leadboard/lead-detail/lead-detail.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-completed-leads',
@@ -21,13 +23,16 @@ import { Lead } from '../interfaces/lead.interface';
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    LeadDetailComponent,
+    MatDialogModule
   ],
   templateUrl: './completed-leads.component.html',
   styleUrls: ['./completed-leads.component.scss']
 })
 export class CompletedLeadsComponent implements OnInit {
   firestore: Firestore = inject(Firestore);
+  dialog: MatDialog = inject(MatDialog);
   displayedColumns: string[] = ['title', 'status', 'value', 'reopen'];
   dataSource = new MatTableDataSource<Lead>();
 
@@ -69,5 +74,21 @@ export class CompletedLeadsComponent implements OnInit {
   async reopenLead(id: string) {
     const leadDocRef = doc(this.firestore, 'leads', id);
     await updateDoc(leadDocRef, { status: 'open' });
+  }
+
+  openLeadDetail(lead: Lead) {
+    const dialogRef = this.dialog.open(LeadDetailComponent, {
+      data: lead
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        const index = this.dataSource.data.findIndex(item => item.id === lead.id);
+        if (index > -1) {
+          this.dataSource.data[index] = { ...lead, ...result };
+          this.dataSource.data = [...this.dataSource.data];
+        }
+      }
+    });
   }
 }
